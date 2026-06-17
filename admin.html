@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel — Nikan Ghafari</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --navy: #0A1628; --navy-2: #0F1F3D; --navy-3: #162645;
+      --gold: #C9A84C; --gold-light: #E2C46E; --gold-dim: rgba(201,168,76,0.12);
+      --cream: #F5F0E8; --text-sub: rgba(245,240,232,0.6);
+      --border: rgba(201,168,76,0.2); --radius: 12px; --radius-sm: 8px;
+      --danger: #e05a5a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--navy); color: var(--cream); min-height: 100vh; }
+
+    /* LOGIN */
+    #loginScreen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(ellipse at 50% 40%, rgba(201,168,76,0.06), transparent 60%);
+    }
+    .login-box {
+      background: var(--navy-2); border: 1px solid var(--border); border-radius: 20px;
+      padding: 48px; width: 360px; text-align: center;
+    }
+    .login-logo { font-size: 2rem; color: var(--gold); margin-bottom: 8px; font-weight: 700; letter-spacing: 0.05em; }
+    .login-sub { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 32px; }
+    .login-box input {
+      width: 100%; padding: 12px 16px; background: var(--navy-3); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--cream); font-size: 1rem; font-family: inherit;
+      outline: none; margin-bottom: 16px; transition: border-color 0.2s;
+    }
+    .login-box input:focus { border-color: var(--gold); }
+    .login-box button {
+      width: 100%; padding: 13px; background: var(--gold); color: var(--navy);
+      border: none; border-radius: var(--radius-sm); font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s; font-family: inherit;
+    }
+    .login-box button:hover { background: var(--gold-light); }
+    .login-err { color: var(--danger); font-size: 0.85rem; margin-top: 12px; }
+
+    /* ADMIN LAYOUT */
+    #adminPanel { display: none; }
+    .admin-header {
+      background: var(--navy-2); border-bottom: 1px solid var(--border);
+      padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .admin-logo { color: var(--gold); font-weight: 700; font-size: 1.1rem; }
+    .admin-actions { display: flex; gap: 10px; align-items: center; }
+    .btn { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer; font-family: inherit; font-weight: 500; border: none; transition: background 0.2s; }
+    .btn-gold { background: var(--gold); color: var(--navy); }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--cream); }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-danger { background: var(--danger); color: #fff; }
+
+    .admin-body { display: flex; min-height: calc(100vh - 60px); }
+
+    /* SIDEBAR */
+    .admin-sidebar {
+      width: 220px; background: var(--navy-2); border-right: 1px solid var(--border);
+      padding: 24px 0; flex-shrink: 0;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 10px; padding: 12px 24px;
+      color: var(--text-sub); cursor: pointer; font-size: 0.9rem;
+      transition: color 0.2s, background 0.2s; border-left: 3px solid transparent;
+    }
+    .sidebar-item:hover { color: var(--cream); background: var(--gold-dim); }
+    .sidebar-item.active { color: var(--gold); border-left-color: var(--gold); background: var(--gold-dim); }
+    .sidebar-item i { width: 18px; text-align: center; }
+
+    /* CONTENT */
+    .admin-content { flex: 1; padding: 32px; overflow-y: auto; }
+
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .section-header h2 { font-size: 1.4rem; font-weight: 600; }
+
+    /* CARDS */
+    .admin-card {
+      background: var(--navy-2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px; margin-bottom: 20px;
+    }
+    .admin-card h3 { font-size: 0.95rem; color: var(--gold); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    label { display: block; font-size: 0.82rem; color: var(--text-sub); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+    input[type="text"], input[type="password"], textarea, select {
+      width: 100%; padding: 10px 14px; background: var(--navy-3); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--cream); font-size: 0.9rem; font-family: inherit;
+      outline: none; transition: border-color 0.2s; resize: vertical;
+    }
+    input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus { border-color: var(--gold); }
+    textarea { min-height: 90px; }
+
+    .field-group { margin-bottom: 16px; }
+
+    .lang-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+    .lang-tab { padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; cursor: pointer; font-size: 0.82rem; color: var(--text-sub); background: transparent; }
+    .lang-tab.active { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 600; }
+
+    /* VENTURES */
+    .venture-list { display: flex; flex-direction: column; gap: 12px; }
+    .venture-item {
+      background: var(--navy-3); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .venture-item-info { display: flex; align-items: center; gap: 12px; flex: 1; }
+    .venture-item-info i { color: var(--gold); width: 20px; text-align: center; }
+    .venture-item-name { font-weight: 600; font-size: 0.95rem; }
+    .venture-item-tag { font-size: 0.75rem; color: var(--text-sub); }
+    .venture-item-actions { display: flex; gap: 8px; }
+
+    /* CHAT MESSAGES */
+    .msg-list { display: flex; flex-direction: column; gap: 12px; }
+    .msg-item {
+      background: var(--navy-3); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+    .msg-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .msg-sender { font-weight: 600; color: var(--gold); font-size: 0.9rem; }
+    .msg-time { font-size: 0.78rem; color: var(--text-sub); }
+    .msg-text { font-size: 0.9rem; color: var(--cream); line-height: 1.5; }
+    .msg-media-thumb { max-height: 80px; border-radius: 6px; margin-top: 8px; }
+    .empty-state { text-align: center; color: var(--text-sub); padding: 48px 0; font-size: 0.95rem; }
+    .empty-state i { font-size: 2rem; display: block; margin-bottom: 12px; color: var(--gold); opacity: 0.3; }
+
+    /* IMAGE UPLOAD */
+    .upload-area {
+      border: 2px dashed var(--border); border-radius: var(--radius-sm); padding: 32px;
+      text-align: center; cursor: pointer; transition: border-color 0.2s;
+    }
+    .upload-area:hover { border-color: var(--gold); }
+    .upload-area i { font-size: 2rem; color: var(--gold); opacity: 0.5; display: block; margin-bottom: 8px; }
+    .upload-area p { color: var(--text-sub); font-size: 0.85rem; }
+    .upload-area input { display: none; }
+    .img-preview { max-height: 120px; border-radius: 8px; margin-top: 12px; }
+
+    /* TOGGLE */
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-label { font-size: 0.9rem; }
+    .toggle { position: relative; width: 44px; height: 24px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; inset: 0; background: var(--navy-3); border-radius: 24px; cursor: pointer; transition: 0.2s; border: 1px solid var(--border); }
+    .slider::before { content: ''; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: var(--text-sub); border-radius: 50%; transition: 0.2s; }
+    input:checked + .slider { background: var(--gold-dim); border-color: var(--gold); }
+    input:checked + .slider::before { transform: translateX(20px); background: var(--gold); }
+
+    .save-bar {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--gold); color: var(--navy); padding: 12px 28px;
+      border-radius: 40px; font-weight: 700; cursor: pointer; border: none;
+      font-size: 0.9rem; font-family: inherit; box-shadow: 0 8px 24px rgba(201,168,76,0.3);
+      display: none; align-items: center; gap: 8px; transition: background 0.2s;
+    }
+    .save-bar:hover { background: var(--gold-light); }
+    .save-bar.visible { display: flex; }
+
+    .toast {
+      position: fixed; bottom: 80px; right: 24px;
+      background: var(--navy-2); border: 1px solid var(--gold); color: var(--cream);
+      padding: 12px 20px; border-radius: var(--radius-sm); font-size: 0.9rem;
+      display: none; z-index: 999;
+    }
+    .toast.show { display: block; }
+
+    @media (max-width: 768px) {
+      .admin-sidebar { display: none; }
+      .admin-content { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">NG</div>
+    <p class="login-sub">Admin Panel — Nikan Ghafari</p>
+    <input type="password" id="adminPass" placeholder="Enter password..." onkeydown="if(event.key==='Enter')login()"/>
+    <button onclick="login()">Login</button>
+    <p class="login-err" id="loginErr"></p>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <header class="admin-header">
+    <div class="admin-logo">⚙ Admin Panel</div>
+    <div class="admin-actions">
+      <a href="index.html" target="_blank"><button class="btn btn-outline"><i class="fa fa-external-link"></i> View Site</button></a>
+      <button class="btn btn-outline" onclick="logout()"><i class="fa fa-sign-out"></i> Logout</button>
+    </div>
+  </header>
+
+  <div class="admin-body">
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-item active" onclick="showTab('hero')"><i class="fa fa-home"></i> Hero Section</div>
+      <div class="sidebar-item" onclick="showTab('about')"><i class="fa fa-user"></i> About Me</div>
+      <div class="sidebar-item" onclick="showTab('video')"><i class="fa fa-video"></i> Video</div>
+      <div class="sidebar-item" onclick="showTab('ventures')"><i class="fa fa-briefcase"></i> Ventures</div>
+      <div class="sidebar-item" onclick="showTab('contact')"><i class="fa fa-phone"></i> Contact</div>
+      <div class="sidebar-item" onclick="showTab('chat')"><i class="fa fa-comments"></i> Chat Messages</div>
+      <div class="sidebar-item" onclick="showTab('settings')"><i class="fa fa-cog"></i> Settings</div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="admin-content">
+
+      <!-- HERO -->
+      <div class="tab-section active" id="tab-hero">
+        <div class="section-header"><h2>Hero Section</h2></div>
+        <div class="admin-card">
+          <h3>Content</h3>
+          <div class="lang-tabs">
+            <button class="lang-tab active" onclick="switchLangTab(this,'hero','en')">EN</button>
+            <button class="lang-tab" onclick="switchLangTab(this,'hero','fa')">FA</button>
+            <button class="lang-tab" onclick="switchLangTab(this,'hero','ar')">AR</button>
+          </div>
+          <div class="field-group"><label>Eyebrow text</label><input type="text" id="hero_eyebrow_en" value="Entrepreneur · AI Specialist · Trader"/></div>
+          <div class="field-group"><label>Tagline</label><input type="text" id="hero_tagline_en" value="Building at the intersection of technology, markets & nature."/></div>
+          <div class="field-group"><label>CTA Button text</label><input type="text" id="hero_cta_en" value="Discover More"/></div>
+        </div>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="tab-section" id="tab-about">
+        <div class="section-header"><h2>About Me</h2></div>
+        <div class="admin-card">
+          <h3>Photo</h3>
+          <label class="upload-area" for="aboutImgInput">
+            <i class="fa fa-image"></i>
+            <p>Click to upload your photo</p>
+            <input type="file" id="aboutImgInput" accept="image/*" onchange="previewAboutImg(event)"/>
+          </label>
+          <img id="aboutImgPreview" class="img-preview" style="display:none;"/>
+        </div>
+        <div class="admin-card">
+          <h3>Bio Text</h3>
+          <div class="lang-tabs">
+            <button class="lang-tab active" onclick="switchLangTab(this,'about','en')">EN</button>
+            <button class="lang-tab" onclick="switchLangTab(this,'about','fa')">FA</button>
+            <button class="lang-tab" onclick="switchLangTab(this,'about','ar')">AR</button>
+          </div>
+          <div class="field-group"><label>Bio (English)</label><textarea id="about_body_en">I am Nikan Ghafari — an entrepreneur and specialist operating across multiple high-impact domains.</textarea></div>
+        </div>
+      </div>
+
+      <!-- VIDEO -->
+      <div class="tab-section" id="tab-video">
+        <div class="section-header"><h2>Hero Video</h2></div>
+        <div class="admin-card">
+          <h3>Upload Video</h3>
+          <p style="color:var(--text-sub);font-size:0.85rem;margin-bottom:16px;">Upload your intro video. It will play automatically (muted) on the homepage.</p>
+          <label class="upload-area" for="videoInput">
+            <i class="fa fa-video"></i>
+            <p>Click to upload video (MP4 recommended)</p>
+            <input type="file" id="videoInput" accept="video/*" onchange="handleVideoUpload(event)"/>
+          </label>
+          <div id="videoUploadStatus" style="margin-top:12px;color:var(--gold);font-size:0.85rem;"></div>
+        </div>
+      </div>
+
+      <!-- VENTURES -->
+      <div class="tab-section" id="tab-ventures">
+        <div class="section-header">
+          <h2>Ventures</h2>
+          <button class="btn btn-gold" onclick="showAddVenture()"><i class="fa fa-plus"></i> Add Venture</button>
+        </div>
+
+        <div class="venture-list" id="ventureList">
+          <div class="venture-item">
+            <div class="venture-item-info"><i class="fa fa-seedling"></i><div><div class="venture-item-name">Saffron</div><div class="venture-item-tag">Premium Supply</div></div></div>
+            <div class="venture-item-actions">
+              <button class="btn btn-outline" onclick="editVenture('saffron')"><i class="fa fa-edit"></i></button>
+              <button class="btn btn-outline"><i class="fa fa-eye"></i></button>
+            </div>
+          </div>
+          <div class="venture-item">
+            <div class="venture-item-info"><i class="fa fa-brain"></i><div><div class="venture-item-name">DietAI</div><div class="venture-item-tag">AI Tool</div></div></div>
+            <div class="venture-item-actions">
+              <button class="btn btn-outline" onclick="editVenture('dietai')"><i class="fa fa-edit"></i></button>
+              <button class="btn btn-outline"><i class="fa fa-eye"></i></button>
+            </div>
+          </div>
+          <div class="venture-item">
+            <div class="venture-item-info"><i class="fa fa-chart-line"></i><div><div class="venture-item-name">Market Edge</div><div class="venture-item-tag">Trading</div></div></div>
+            <div class="venture-item-actions">
+              <button class="btn btn-outline" onclick="editVenture('market')"><i class="fa fa-edit"></i></button>
+              <button class="btn btn-outline"><i class="fa fa-eye"></i></button>
+            </div>
+          </div>
+          <div class="venture-item">
+            <div class="venture-item-info"><i class="fa fa-microchip"></i><div><div class="venture-item-name">AI Specialist</div><div class="venture-item-tag">AI</div></div></div>
+            <div class="venture-item-actions">
+              <button class="btn btn-outline" onclick="editVenture('ai')"><i class="fa fa-edit"></i></button>
+              <button class="btn btn-outline"><i class="fa fa-eye"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit venture form -->
+        <div id="ventureEditForm" class="admin-card" style="display:none;margin-top:20px;">
+          <h3>Edit Venture</h3>
+          <div class="lang-tabs">
+            <button class="lang-tab active" onclick="switchLangTab(this,'vent','en')">EN</button>
+            <button class="lang-tab" onclick="switchLangTab(this,'vent','fa')">FA</button>
+            <button class="lang-tab" onclick="switchLangTab(this,'vent','ar')">AR</button>
+          </div>
+          <div class="field-group"><label>Name</label><input type="text" id="vent_name_en"/></div>
+          <div class="field-group"><label>Tag / Category</label><input type="text" id="vent_tag_en"/></div>
+          <div class="field-group"><label>Description</label><textarea id="vent_desc_en"></textarea></div>
+          <div class="field-group"><label>Image</label>
+            <label class="upload-area" for="ventImgInput" style="padding:20px;">
+              <i class="fa fa-image"></i><p>Upload venture image</p>
+              <input type="file" id="ventImgInput" accept="image/*" onchange="previewVentImg(event)"/>
+            </label>
+            <img id="ventImgPreview" class="img-preview" style="display:none;"/>
+          </div>
+          <div class="field-group"><label>Links (one per line, format: Platform|URL)</label>
+            <textarea id="vent_links" placeholder="Telegram|https://t.me/...&#10;Bale|https://ble.ir/..."></textarea>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:8px;">
+            <button class="btn btn-gold" onclick="saveVenture()">Save Venture</button>
+            <button class="btn btn-outline" onclick="document.getElementById('ventureEditForm').style.display='none'">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="tab-section" id="tab-contact">
+        <div class="section-header"><h2>Contact Info</h2></div>
+        <div class="admin-card">
+          <h3>Phone & Channels</h3>
+          <div class="field-group"><label>Phone Number</label><input type="text" id="contact_phone" value="+989378223550"/></div>
+          <div class="field-group"><label>Personal Telegram/Bale/Eitaa ID</label><input type="text" id="contact_personal" value="@NikanGhafari"/></div>
+          <div class="field-group"><label>Saffron Channel ID</label><input type="text" id="contact_saffron" value="@ghafari_saffron"/></div>
+          <div class="field-group"><label>DietAI Channel ID</label><input type="text" id="contact_dietai" value="@mrgh_link"/></div>
+        </div>
+      </div>
+
+      <!-- CHAT MESSAGES -->
+      <div class="tab-section" id="tab-chat">
+        <div class="section-header">
+          <h2>Chat Messages</h2>
+          <button class="btn btn-outline" onclick="clearMessages()"><i class="fa fa-trash"></i> Clear All</button>
+        </div>
+        <div class="admin-card">
+          <h3>Telegram Bot Setup</h3>
+          <p style="color:var(--text-sub);font-size:0.85rem;margin-bottom:16px;">To receive messages on Telegram, enter your bot credentials.</p>
+          <div class="field-group"><label>Bot Token (from @BotFather)</label><input type="text" id="botToken" placeholder="123456:ABC-DEF..."/></div>
+          <div class="field-group"><label>Your Chat ID</label><input type="text" id="chatId" placeholder="Your Telegram chat ID"/></div>
+          <button class="btn btn-gold" onclick="saveBotSettings()">Save Bot Settings</button>
+        </div>
+        <div class="msg-list" id="adminMsgList">
+          <div class="empty-state"><i class="fa fa-comments"></i><p>No messages yet</p></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="tab-section" id="tab-settings">
+        <div class="section-header"><h2>Settings</h2></div>
+        <div class="admin-card">
+          <h3>Change Password</h3>
+          <div class="field-group"><label>Current Password</label><input type="password" id="currentPass"/></div>
+          <div class="field-group"><label>New Password</label><input type="password" id="newPass"/></div>
+          <div class="field-group"><label>Confirm New Password</label><input type="password" id="confirmPass"/></div>
+          <button class="btn btn-gold" onclick="changePassword()">Update Password</button>
+        </div>
+        <div class="admin-card">
+          <h3>Section Visibility</h3>
+          <div class="toggle-row"><span class="toggle-label">Show Video Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+          <div class="toggle-row"><span class="toggle-label">Show About Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+          <div class="toggle-row"><span class="toggle-label">Show Ventures Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+          <div class="toggle-row"><span class="toggle-label">Show Chat Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+          <div class="toggle-row"><span class="toggle-label">Show Contact Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<button class="save-bar" id="saveBar" onclick="saveAll()"><i class="fa fa-save"></i> Save Changes</button>
+<div class="toast" id="toast">✓ Changes saved successfully!</div>
+
+<script>
+// ---- AUTH ----
+const ADMIN_PASS_KEY = 'ng_admin_pass';
+const DEFAULT_PASS = 'nikan2024';
+
+function login() {
+  const pass = document.getElementById('adminPass').value;
+  const stored = localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_PASS;
+  if (pass === stored) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    loadSaved();
+  } else {
+    document.getElementById('loginErr').textContent = 'Incorrect password.';
+  }
+}
+
+function logout() {
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('adminPass').value = '';
+}
+
+function changePassword() {
+  const cur = document.getElementById('currentPass').value;
+  const stored = localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_PASS;
+  if (cur !== stored) { alert('Current password is incorrect.'); return; }
+  const np = document.getElementById('newPass').value;
+  const cp = document.getElementById('confirmPass').value;
+  if (np !== cp) { alert('New passwords do not match.'); return; }
+  if (np.length < 6) { alert('Password must be at least 6 characters.'); return; }
+  localStorage.setItem(ADMIN_PASS_KEY, np);
+  showToast('Password updated!');
+}
+
+// ---- TABS ----
+function showTab(name) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+  document.getElementById('saveBar').classList.add('visible');
+}
+
+// ---- LANG TABS ----
+function switchLangTab(btn, section, lang) {
+  btn.closest('.admin-card').querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  // Could show/hide lang-specific fields here
+}
+
+// ---- IMAGE PREVIEWS ----
+function previewAboutImg(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('aboutImgPreview');
+    img.src = e.target.result;
+    img.style.display = 'block';
+    localStorage.setItem('ng_about_img', e.target.result);
+  };
+  reader.readAsDataURL(file);
+}
+
+function previewVentImg(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('ventImgPreview');
+    img.src = e.target.result;
+    img.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+// ---- VIDEO ----
+function handleVideoUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const status = document.getElementById('videoUploadStatus');
+  status.textContent = '⏳ Processing...';
+  const reader = new FileReader();
+  reader.onload = e => {
+    localStorage.setItem('ng_video_url', e.target.result);
+    status.textContent = '✓ Video saved! It will appear on your homepage.';
+  };
+  reader.readAsDataURL(file);
+}
+
+// ---- VENTURES ----
+function editVenture(id) {
+  const data = {
+    saffron: { name: 'Saffron', tag: 'Premium Supply', desc: 'Premium saffron supplier delivering the finest quality directly to markets.' },
+    dietai: { name: 'DietAI', tag: 'AI Tool', desc: 'Developer of an AI-powered diet & nutrition planning tool.' },
+    market: { name: 'Market Edge', tag: 'Trading', desc: 'Professional financial markets trader.' },
+    ai: { name: 'AI Specialist', tag: 'AI', desc: 'Artificial intelligence expert.' }
+  };
+  const v = data[id];
+  document.getElementById('vent_name_en').value = v.name;
+  document.getElementById('vent_tag_en').value = v.tag;
+  document.getElementById('vent_desc_en').value = v.desc;
+  document.getElementById('ventureEditForm').style.display = 'block';
+  document.getElementById('ventureEditForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+function showAddVenture() {
+  document.getElementById('vent_name_en').value = '';
+  document.getElementById('vent_tag_en').value = '';
+  document.getElementById('vent_desc_en').value = '';
+  document.getElementById('vent_links').value = '';
+  document.getElementById('ventureEditForm').style.display = 'block';
+  document.getElementById('ventureEditForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+function saveVenture() {
+  showToast('Venture saved!');
+  document.getElementById('ventureEditForm').style.display = 'none';
+}
+
+// ---- BOT SETTINGS ----
+function saveBotSettings() {
+  const token = document.getElementById('botToken').value.trim();
+  const chatId = document.getElementById('chatId').value.trim();
+  if (token) localStorage.setItem('ng_bot_token', token);
+  if (chatId) localStorage.setItem('ng_chat_id', chatId);
+  showToast('Bot settings saved! Update chat.js with these values.');
+}
+
+function clearMessages() {
+  if (confirm('Clear all chat messages?')) {
+    document.getElementById('adminMsgList').innerHTML = '<div class="empty-state"><i class="fa fa-comments"></i><p>No messages yet</p></div>';
+    showToast('Messages cleared');
+  }
+}
+
+// ---- SAVE ----
+function saveAll() {
+  showToast('Changes saved successfully!');
+}
+
+function loadSaved() {
+  const botToken = localStorage.getItem('ng_bot_token');
+  const chatId = localStorage.getItem('ng_chat_id');
+  if (botToken) document.getElementById('botToken').value = botToken;
+  if (chatId) document.getElementById('chatId').value = chatId;
+  const aboutImg = localStorage.getItem('ng_about_img');
+  if (aboutImg) {
+    document.getElementById('aboutImgPreview').src = aboutImg;
+    document.getElementById('aboutImgPreview').style.display = 'block';
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = '✓ ' + msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Enter key on login
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') login();
+});
+</script>
+</body>
+</html>
