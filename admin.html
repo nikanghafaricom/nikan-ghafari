@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel — Nikan Ghafari</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     :root {
@@ -15,13 +15,26 @@
       --danger: #e05a5a;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: var(--navy); color: var(--cream); min-height: 100vh; }
+    body { font-family: 'Inter', sans-serif; background: var(--navy); color: var(--cream); min-height: 100vh; transition: font-family 0.2s; }
+    body[dir="rtl"] { font-family: 'Vazirmatn', 'Inter', sans-serif; }
 
     /* LOGIN */
     #loginScreen {
       min-height: 100vh; display: flex; align-items: center; justify-content: center;
       background: radial-gradient(ellipse at 50% 40%, rgba(201,168,76,0.06), transparent 60%);
+      position: relative;
     }
+    .login-lang-switch {
+      position: absolute; top: 24px; right: 24px;
+      display: flex; gap: 6px; background: var(--navy-2); border: 1px solid var(--border);
+      border-radius: 20px; padding: 4px;
+    }
+    body[dir="rtl"] .login-lang-switch { right: auto; left: 24px; }
+    .login-lang-switch button {
+      background: transparent; border: none; color: var(--text-sub); padding: 6px 14px;
+      border-radius: 16px; cursor: pointer; font-size: 0.8rem; font-family: inherit; font-weight: 500;
+    }
+    .login-lang-switch button.active { background: var(--gold); color: var(--navy); }
     .login-box {
       background: var(--navy-2); border: 1px solid var(--border); border-radius: 20px;
       padding: 48px; width: 360px; text-align: center;
@@ -34,13 +47,13 @@
       outline: none; margin-bottom: 16px; transition: border-color 0.2s;
     }
     .login-box input:focus { border-color: var(--gold); }
-    .login-box button {
+    .login-box button.login-submit {
       width: 100%; padding: 13px; background: var(--gold); color: var(--navy);
       border: none; border-radius: var(--radius-sm); font-size: 1rem; font-weight: 700;
       cursor: pointer; transition: background 0.2s; font-family: inherit;
     }
-    .login-box button:hover { background: var(--gold-light); }
-    .login-err { color: var(--danger); font-size: 0.85rem; margin-top: 12px; }
+    .login-box button.login-submit:hover { background: var(--gold-light); }
+    .login-err { color: var(--danger); font-size: 0.85rem; margin-top: 12px; min-height: 1em; }
 
     /* ADMIN LAYOUT */
     #adminPanel { display: none; }
@@ -51,12 +64,22 @@
     }
     .admin-logo { color: var(--gold); font-weight: 700; font-size: 1.1rem; }
     .admin-actions { display: flex; gap: 10px; align-items: center; }
-    .btn { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer; font-family: inherit; font-weight: 500; border: none; transition: background 0.2s; }
+    .btn { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer; font-family: inherit; font-weight: 500; border: none; transition: background 0.2s; display: inline-flex; align-items: center; gap: 6px; }
     .btn-gold { background: var(--gold); color: var(--navy); }
     .btn-gold:hover { background: var(--gold-light); }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--cream); }
     .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
     .btn-danger { background: var(--danger); color: #fff; }
+
+    .lang-switch {
+      display: flex; gap: 4px; background: var(--navy-3); border: 1px solid var(--border);
+      border-radius: 20px; padding: 3px;
+    }
+    .lang-switch button {
+      background: transparent; border: none; color: var(--text-sub); padding: 5px 12px;
+      border-radius: 16px; cursor: pointer; font-size: 0.78rem; font-family: inherit; font-weight: 600;
+    }
+    .lang-switch button.active { background: var(--gold); color: var(--navy); }
 
     .admin-body { display: flex; min-height: calc(100vh - 60px); }
 
@@ -65,13 +88,16 @@
       width: 220px; background: var(--navy-2); border-right: 1px solid var(--border);
       padding: 24px 0; flex-shrink: 0;
     }
+    body[dir="rtl"] .admin-sidebar { border-right: none; border-left: 1px solid var(--border); }
     .sidebar-item {
       display: flex; align-items: center; gap: 10px; padding: 12px 24px;
       color: var(--text-sub); cursor: pointer; font-size: 0.9rem;
       transition: color 0.2s, background 0.2s; border-left: 3px solid transparent;
     }
+    body[dir="rtl"] .sidebar-item { border-left: none; border-right: 3px solid transparent; }
     .sidebar-item:hover { color: var(--cream); background: var(--gold-dim); }
     .sidebar-item.active { color: var(--gold); border-left-color: var(--gold); background: var(--gold-dim); }
+    body[dir="rtl"] .sidebar-item.active { border-left-color: transparent; border-right-color: var(--gold); }
     .sidebar-item i { width: 18px; text-align: center; }
 
     /* CONTENT */
@@ -89,6 +115,7 @@
       padding: 24px; margin-bottom: 20px;
     }
     .admin-card h3 { font-size: 0.95rem; color: var(--gold); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.1em; }
+    .admin-card p.hint { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 16px; }
 
     label { display: block; font-size: 0.82rem; color: var(--text-sub); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
     input[type="text"], input[type="password"], textarea, select {
@@ -102,7 +129,7 @@
     .field-group { margin-bottom: 16px; }
 
     .lang-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-    .lang-tab { padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; cursor: pointer; font-size: 0.82rem; color: var(--text-sub); background: transparent; }
+    .lang-tab { padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; cursor: pointer; font-size: 0.82rem; color: var(--text-sub); background: transparent; font-family: inherit; }
     .lang-tab.active { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 600; }
 
     /* VENTURES */
@@ -134,7 +161,7 @@
     /* IMAGE UPLOAD */
     .upload-area {
       border: 2px dashed var(--border); border-radius: var(--radius-sm); padding: 32px;
-      text-align: center; cursor: pointer; transition: border-color 0.2s;
+      text-align: center; cursor: pointer; transition: border-color 0.2s; display: block;
     }
     .upload-area:hover { border-color: var(--gold); }
     .upload-area i { font-size: 2rem; color: var(--gold); opacity: 0.5; display: block; margin-bottom: 8px; }
@@ -146,12 +173,14 @@
     .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
     .toggle-row:last-child { border-bottom: none; }
     .toggle-label { font-size: 0.9rem; }
-    .toggle { position: relative; width: 44px; height: 24px; }
+    .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
     .toggle input { opacity: 0; width: 0; height: 0; }
     .slider { position: absolute; inset: 0; background: var(--navy-3); border-radius: 24px; cursor: pointer; transition: 0.2s; border: 1px solid var(--border); }
     .slider::before { content: ''; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: var(--text-sub); border-radius: 50%; transition: 0.2s; }
     input:checked + .slider { background: var(--gold-dim); border-color: var(--gold); }
     input:checked + .slider::before { transform: translateX(20px); background: var(--gold); }
+    body[dir="rtl"] .slider::before { left: auto; right: 3px; }
+    body[dir="rtl"] input:checked + .slider::before { transform: translateX(-20px); }
 
     .save-bar {
       position: fixed; bottom: 24px; right: 24px;
@@ -160,6 +189,7 @@
       font-size: 0.9rem; font-family: inherit; box-shadow: 0 8px 24px rgba(201,168,76,0.3);
       display: none; align-items: center; gap: 8px; transition: background 0.2s;
     }
+    body[dir="rtl"] .save-bar { right: auto; left: 24px; }
     .save-bar:hover { background: var(--gold-light); }
     .save-bar.visible { display: flex; }
 
@@ -169,6 +199,7 @@
       padding: 12px 20px; border-radius: var(--radius-sm); font-size: 0.9rem;
       display: none; z-index: 999;
     }
+    body[dir="rtl"] .toast { right: auto; left: 24px; }
     .toast.show { display: block; }
 
     @media (max-width: 768px) {
@@ -181,11 +212,15 @@
 
 <!-- LOGIN SCREEN -->
 <div id="loginScreen">
+  <div class="login-lang-switch">
+    <button id="loginLangEn" class="active" onclick="setAdminLang('en')">EN</button>
+    <button id="loginLangFa" onclick="setAdminLang('fa')">FA</button>
+  </div>
   <div class="login-box">
     <div class="login-logo">NG</div>
-    <p class="login-sub">Admin Panel — Nikan Ghafari</p>
-    <input type="password" id="adminPass" placeholder="Enter password..." onkeydown="if(event.key==='Enter')login()"/>
-    <button onclick="login()">Login</button>
+    <p class="login-sub" data-t="login_sub">Admin Panel — Nikan Ghafari</p>
+    <input type="password" id="adminPass" data-t-placeholder="login_placeholder" placeholder="Enter password..." onkeydown="if(event.key==='Enter')login()"/>
+    <button class="login-submit" data-t="login_btn" onclick="login()">Login</button>
     <p class="login-err" id="loginErr"></p>
   </div>
 </div>
@@ -193,23 +228,27 @@
 <!-- ADMIN PANEL -->
 <div id="adminPanel">
   <header class="admin-header">
-    <div class="admin-logo">⚙ Admin Panel</div>
+    <div class="admin-logo" data-t="header_title">⚙ Admin Panel</div>
     <div class="admin-actions">
-      <a href="index.html" target="_blank"><button class="btn btn-outline"><i class="fa fa-external-link"></i> View Site</button></a>
-      <button class="btn btn-outline" onclick="logout()"><i class="fa fa-sign-out"></i> Logout</button>
+      <div class="lang-switch">
+        <button id="panelLangEn" class="active" onclick="setAdminLang('en')">EN</button>
+        <button id="panelLangFa" onclick="setAdminLang('fa')">FA</button>
+      </div>
+      <a href="index.html" target="_blank"><button class="btn btn-outline"><i class="fa fa-external-link"></i> <span data-t="view_site">View Site</span></button></a>
+      <button class="btn btn-outline" onclick="logout()"><i class="fa fa-sign-out"></i> <span data-t="logout">Logout</span></button>
     </div>
   </header>
 
   <div class="admin-body">
     <!-- SIDEBAR -->
     <aside class="admin-sidebar">
-      <div class="sidebar-item active" onclick="showTab('hero')"><i class="fa fa-home"></i> Hero Section</div>
-      <div class="sidebar-item" onclick="showTab('about')"><i class="fa fa-user"></i> About Me</div>
-      <div class="sidebar-item" onclick="showTab('video')"><i class="fa fa-video"></i> Video</div>
-      <div class="sidebar-item" onclick="showTab('ventures')"><i class="fa fa-briefcase"></i> Ventures</div>
-      <div class="sidebar-item" onclick="showTab('contact')"><i class="fa fa-phone"></i> Contact</div>
-      <div class="sidebar-item" onclick="showTab('chat')"><i class="fa fa-comments"></i> Chat Messages</div>
-      <div class="sidebar-item" onclick="showTab('settings')"><i class="fa fa-cog"></i> Settings</div>
+      <div class="sidebar-item active" onclick="showTab('hero')"><i class="fa fa-home"></i> <span data-t="side_hero">Hero Section</span></div>
+      <div class="sidebar-item" onclick="showTab('about')"><i class="fa fa-user"></i> <span data-t="side_about">About Me</span></div>
+      <div class="sidebar-item" onclick="showTab('video')"><i class="fa fa-video"></i> <span data-t="side_video">Video</span></div>
+      <div class="sidebar-item" onclick="showTab('ventures')"><i class="fa fa-briefcase"></i> <span data-t="side_ventures">Ventures</span></div>
+      <div class="sidebar-item" onclick="showTab('contact')"><i class="fa fa-phone"></i> <span data-t="side_contact">Contact</span></div>
+      <div class="sidebar-item" onclick="showTab('chat')"><i class="fa fa-comments"></i> <span data-t="side_chat">Chat Messages</span></div>
+      <div class="sidebar-item" onclick="showTab('settings')"><i class="fa fa-cog"></i> <span data-t="side_settings">Settings</span></div>
     </aside>
 
     <!-- CONTENT -->
@@ -217,52 +256,52 @@
 
       <!-- HERO -->
       <div class="tab-section active" id="tab-hero">
-        <div class="section-header"><h2>Hero Section</h2></div>
+        <div class="section-header"><h2 data-t="hero_h2">Hero Section</h2></div>
         <div class="admin-card">
-          <h3>Content</h3>
+          <h3 data-t="content">Content</h3>
           <div class="lang-tabs">
             <button class="lang-tab active" onclick="switchLangTab(this,'hero','en')">EN</button>
             <button class="lang-tab" onclick="switchLangTab(this,'hero','fa')">FA</button>
             <button class="lang-tab" onclick="switchLangTab(this,'hero','ar')">AR</button>
           </div>
-          <div class="field-group"><label>Eyebrow text</label><input type="text" id="hero_eyebrow_en" value="Entrepreneur · AI Specialist · Trader"/></div>
-          <div class="field-group"><label>Tagline</label><input type="text" id="hero_tagline_en" value="Building at the intersection of technology, markets & nature."/></div>
-          <div class="field-group"><label>CTA Button text</label><input type="text" id="hero_cta_en" value="Discover More"/></div>
+          <div class="field-group"><label data-t="eyebrow_label">Eyebrow text</label><input type="text" id="hero_eyebrow_en" value="Entrepreneur · AI Specialist · Trader"/></div>
+          <div class="field-group"><label data-t="tagline_label">Tagline</label><input type="text" id="hero_tagline_en" value="Building at the intersection of technology, markets & nature."/></div>
+          <div class="field-group"><label data-t="cta_label">CTA Button text</label><input type="text" id="hero_cta_en" value="Discover More"/></div>
         </div>
       </div>
 
       <!-- ABOUT -->
       <div class="tab-section" id="tab-about">
-        <div class="section-header"><h2>About Me</h2></div>
+        <div class="section-header"><h2 data-t="side_about">About Me</h2></div>
         <div class="admin-card">
-          <h3>Photo</h3>
+          <h3 data-t="photo">Photo</h3>
           <label class="upload-area" for="aboutImgInput">
             <i class="fa fa-image"></i>
-            <p>Click to upload your photo</p>
+            <p data-t="upload_photo_hint">Click to upload your photo</p>
             <input type="file" id="aboutImgInput" accept="image/*" onchange="previewAboutImg(event)"/>
           </label>
           <img id="aboutImgPreview" class="img-preview" style="display:none;"/>
         </div>
         <div class="admin-card">
-          <h3>Bio Text</h3>
+          <h3 data-t="bio_text">Bio Text</h3>
           <div class="lang-tabs">
             <button class="lang-tab active" onclick="switchLangTab(this,'about','en')">EN</button>
             <button class="lang-tab" onclick="switchLangTab(this,'about','fa')">FA</button>
             <button class="lang-tab" onclick="switchLangTab(this,'about','ar')">AR</button>
           </div>
-          <div class="field-group"><label>Bio (English)</label><textarea id="about_body_en">I am Nikan Ghafari — an entrepreneur and specialist operating across multiple high-impact domains.</textarea></div>
+          <div class="field-group"><label data-t="bio_en_label">Bio (English)</label><textarea id="about_body_en">I am Nikan Ghafari — an entrepreneur and specialist operating across multiple high-impact domains.</textarea></div>
         </div>
       </div>
 
       <!-- VIDEO -->
       <div class="tab-section" id="tab-video">
-        <div class="section-header"><h2>Hero Video</h2></div>
+        <div class="section-header"><h2 data-t="video_h2">Hero Video</h2></div>
         <div class="admin-card">
-          <h3>Upload Video</h3>
-          <p style="color:var(--text-sub);font-size:0.85rem;margin-bottom:16px;">Upload your intro video. It will play automatically (muted) on the homepage.</p>
+          <h3 data-t="upload_video">Upload Video</h3>
+          <p class="hint" data-t="video_hint">Upload your intro video. It will play automatically (muted) on the homepage.</p>
           <label class="upload-area" for="videoInput">
             <i class="fa fa-video"></i>
-            <p>Click to upload video (MP4 recommended)</p>
+            <p data-t="upload_video_hint">Click to upload video (MP4 recommended)</p>
             <input type="file" id="videoInput" accept="video/*" onchange="handleVideoUpload(event)"/>
           </label>
           <div id="videoUploadStatus" style="margin-top:12px;color:var(--gold);font-size:0.85rem;"></div>
@@ -272,34 +311,34 @@
       <!-- VENTURES -->
       <div class="tab-section" id="tab-ventures">
         <div class="section-header">
-          <h2>Ventures</h2>
-          <button class="btn btn-gold" onclick="showAddVenture()"><i class="fa fa-plus"></i> Add Venture</button>
+          <h2 data-t="side_ventures">Ventures</h2>
+          <button class="btn btn-gold" onclick="showAddVenture()"><i class="fa fa-plus"></i> <span data-t="add_venture">Add Venture</span></button>
         </div>
 
         <div class="venture-list" id="ventureList">
           <div class="venture-item">
-            <div class="venture-item-info"><i class="fa fa-seedling"></i><div><div class="venture-item-name">Saffron</div><div class="venture-item-tag">Premium Supply</div></div></div>
+            <div class="venture-item-info"><i class="fa fa-seedling"></i><div><div class="venture-item-name">Saffron</div><div class="venture-item-tag" data-t="tag_premium_supply">Premium Supply</div></div></div>
             <div class="venture-item-actions">
               <button class="btn btn-outline" onclick="editVenture('saffron')"><i class="fa fa-edit"></i></button>
               <button class="btn btn-outline"><i class="fa fa-eye"></i></button>
             </div>
           </div>
           <div class="venture-item">
-            <div class="venture-item-info"><i class="fa fa-brain"></i><div><div class="venture-item-name">DietAI</div><div class="venture-item-tag">AI Tool</div></div></div>
+            <div class="venture-item-info"><i class="fa fa-brain"></i><div><div class="venture-item-name">DietAI</div><div class="venture-item-tag" data-t="tag_ai_tool">AI Tool</div></div></div>
             <div class="venture-item-actions">
               <button class="btn btn-outline" onclick="editVenture('dietai')"><i class="fa fa-edit"></i></button>
               <button class="btn btn-outline"><i class="fa fa-eye"></i></button>
             </div>
           </div>
           <div class="venture-item">
-            <div class="venture-item-info"><i class="fa fa-chart-line"></i><div><div class="venture-item-name">Market Edge</div><div class="venture-item-tag">Trading</div></div></div>
+            <div class="venture-item-info"><i class="fa fa-chart-line"></i><div><div class="venture-item-name">Market Edge</div><div class="venture-item-tag" data-t="tag_trading">Trading</div></div></div>
             <div class="venture-item-actions">
               <button class="btn btn-outline" onclick="editVenture('market')"><i class="fa fa-edit"></i></button>
               <button class="btn btn-outline"><i class="fa fa-eye"></i></button>
             </div>
           </div>
           <div class="venture-item">
-            <div class="venture-item-info"><i class="fa fa-microchip"></i><div><div class="venture-item-name">AI Specialist</div><div class="venture-item-tag">AI</div></div></div>
+            <div class="venture-item-info"><i class="fa fa-microchip"></i><div><div class="venture-item-name">AI Specialist</div><div class="venture-item-tag" data-t="tag_ai">AI</div></div></div>
             <div class="venture-item-actions">
               <button class="btn btn-outline" onclick="editVenture('ai')"><i class="fa fa-edit"></i></button>
               <button class="btn btn-outline"><i class="fa fa-eye"></i></button>
@@ -309,79 +348,79 @@
 
         <!-- Edit venture form -->
         <div id="ventureEditForm" class="admin-card" style="display:none;margin-top:20px;">
-          <h3>Edit Venture</h3>
+          <h3 data-t="edit_venture">Edit Venture</h3>
           <div class="lang-tabs">
             <button class="lang-tab active" onclick="switchLangTab(this,'vent','en')">EN</button>
             <button class="lang-tab" onclick="switchLangTab(this,'vent','fa')">FA</button>
             <button class="lang-tab" onclick="switchLangTab(this,'vent','ar')">AR</button>
           </div>
-          <div class="field-group"><label>Name</label><input type="text" id="vent_name_en"/></div>
-          <div class="field-group"><label>Tag / Category</label><input type="text" id="vent_tag_en"/></div>
-          <div class="field-group"><label>Description</label><textarea id="vent_desc_en"></textarea></div>
-          <div class="field-group"><label>Image</label>
+          <div class="field-group"><label data-t="name_label">Name</label><input type="text" id="vent_name_en"/></div>
+          <div class="field-group"><label data-t="tag_category_label">Tag / Category</label><input type="text" id="vent_tag_en"/></div>
+          <div class="field-group"><label data-t="description_label">Description</label><textarea id="vent_desc_en"></textarea></div>
+          <div class="field-group"><label data-t="image_label">Image</label>
             <label class="upload-area" for="ventImgInput" style="padding:20px;">
-              <i class="fa fa-image"></i><p>Upload venture image</p>
+              <i class="fa fa-image"></i><p data-t="upload_venture_img">Upload venture image</p>
               <input type="file" id="ventImgInput" accept="image/*" onchange="previewVentImg(event)"/>
             </label>
             <img id="ventImgPreview" class="img-preview" style="display:none;"/>
           </div>
-          <div class="field-group"><label>Links (one per line, format: Platform|URL)</label>
+          <div class="field-group"><label data-t="links_label">Links (one per line, format: Platform|URL)</label>
             <textarea id="vent_links" placeholder="Telegram|https://t.me/...&#10;Bale|https://ble.ir/..."></textarea>
           </div>
           <div style="display:flex;gap:10px;margin-top:8px;">
-            <button class="btn btn-gold" onclick="saveVenture()">Save Venture</button>
-            <button class="btn btn-outline" onclick="document.getElementById('ventureEditForm').style.display='none'">Cancel</button>
+            <button class="btn btn-gold" onclick="saveVenture()" data-t="save_venture">Save Venture</button>
+            <button class="btn btn-outline" onclick="document.getElementById('ventureEditForm').style.display='none'" data-t="cancel">Cancel</button>
           </div>
         </div>
       </div>
 
       <!-- CONTACT -->
       <div class="tab-section" id="tab-contact">
-        <div class="section-header"><h2>Contact Info</h2></div>
+        <div class="section-header"><h2 data-t="contact_h2">Contact Info</h2></div>
         <div class="admin-card">
-          <h3>Phone & Channels</h3>
-          <div class="field-group"><label>Phone Number</label><input type="text" id="contact_phone" value="+989378223550"/></div>
-          <div class="field-group"><label>Personal Telegram/Bale/Eitaa ID</label><input type="text" id="contact_personal" value="@NikanGhafari"/></div>
-          <div class="field-group"><label>Saffron Channel ID</label><input type="text" id="contact_saffron" value="@ghafari_saffron"/></div>
-          <div class="field-group"><label>DietAI Channel ID</label><input type="text" id="contact_dietai" value="@mrgh_link"/></div>
+          <h3 data-t="phone_channels">Phone & Channels</h3>
+          <div class="field-group"><label data-t="phone_number_label">Phone Number</label><input type="text" id="contact_phone" value="+989378223550"/></div>
+          <div class="field-group"><label data-t="personal_id_label">Personal Telegram/Bale/Eitaa ID</label><input type="text" id="contact_personal" value="@NikanGhafari"/></div>
+          <div class="field-group"><label data-t="saffron_id_label">Saffron Channel ID</label><input type="text" id="contact_saffron" value="@ghafari_saffron"/></div>
+          <div class="field-group"><label data-t="dietai_id_label">DietAI Channel ID</label><input type="text" id="contact_dietai" value="@mrgh_link"/></div>
         </div>
       </div>
 
       <!-- CHAT MESSAGES -->
       <div class="tab-section" id="tab-chat">
         <div class="section-header">
-          <h2>Chat Messages</h2>
-          <button class="btn btn-outline" onclick="clearMessages()"><i class="fa fa-trash"></i> Clear All</button>
+          <h2 data-t="side_chat">Chat Messages</h2>
+          <button class="btn btn-outline" onclick="clearMessages()"><i class="fa fa-trash"></i> <span data-t="clear_all">Clear All</span></button>
         </div>
         <div class="admin-card">
-          <h3>Telegram Bot Setup</h3>
-          <p style="color:var(--text-sub);font-size:0.85rem;margin-bottom:16px;">To receive messages on Telegram, enter your bot credentials.</p>
-          <div class="field-group"><label>Bot Token (from @BotFather)</label><input type="text" id="botToken" placeholder="123456:ABC-DEF..."/></div>
-          <div class="field-group"><label>Your Chat ID</label><input type="text" id="chatId" placeholder="Your Telegram chat ID"/></div>
-          <button class="btn btn-gold" onclick="saveBotSettings()">Save Bot Settings</button>
+          <h3 data-t="bot_setup">Telegram Bot Setup</h3>
+          <p class="hint" data-t="bot_setup_hint">To receive messages on Telegram, enter your bot credentials.</p>
+          <div class="field-group"><label data-t="bot_token_label">Bot Token (from @BotFather)</label><input type="text" id="botToken" placeholder="123456:ABC-DEF..."/></div>
+          <div class="field-group"><label data-t="chat_id_label">Your Chat ID</label><input type="text" id="chatId" placeholder="Your Telegram chat ID"/></div>
+          <button class="btn btn-gold" onclick="saveBotSettings()" data-t="save_bot_settings">Save Bot Settings</button>
         </div>
         <div class="msg-list" id="adminMsgList">
-          <div class="empty-state"><i class="fa fa-comments"></i><p>No messages yet</p></div>
+          <div class="empty-state"><i class="fa fa-comments"></i><p data-t="no_messages">No messages yet</p></div>
         </div>
       </div>
 
       <!-- SETTINGS -->
       <div class="tab-section" id="tab-settings">
-        <div class="section-header"><h2>Settings</h2></div>
+        <div class="section-header"><h2 data-t="side_settings">Settings</h2></div>
         <div class="admin-card">
-          <h3>Change Password</h3>
-          <div class="field-group"><label>Current Password</label><input type="password" id="currentPass"/></div>
-          <div class="field-group"><label>New Password</label><input type="password" id="newPass"/></div>
-          <div class="field-group"><label>Confirm New Password</label><input type="password" id="confirmPass"/></div>
-          <button class="btn btn-gold" onclick="changePassword()">Update Password</button>
+          <h3 data-t="change_password">Change Password</h3>
+          <div class="field-group"><label data-t="current_password_label">Current Password</label><input type="password" id="currentPass"/></div>
+          <div class="field-group"><label data-t="new_password_label">New Password</label><input type="password" id="newPass"/></div>
+          <div class="field-group"><label data-t="confirm_password_label">Confirm New Password</label><input type="password" id="confirmPass"/></div>
+          <button class="btn btn-gold" onclick="changePassword()" data-t="update_password">Update Password</button>
         </div>
         <div class="admin-card">
-          <h3>Section Visibility</h3>
-          <div class="toggle-row"><span class="toggle-label">Show Video Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
-          <div class="toggle-row"><span class="toggle-label">Show About Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
-          <div class="toggle-row"><span class="toggle-label">Show Ventures Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
-          <div class="toggle-row"><span class="toggle-label">Show Chat Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
-          <div class="toggle-row"><span class="toggle-label">Show Contact Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+          <h3 data-t="section_visibility">Section Visibility</h3>
+          <div class="toggle-row"><span class="toggle-label" data-t="show_video">Show Video Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+          <div class="toggle-row"><span class="toggle-label" data-t="show_about">Show About Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+          <div class="toggle-row"><span class="toggle-label" data-t="show_ventures">Show Ventures Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+          <div class="toggle-row"><span class="toggle-label" data-t="show_chat">Show Chat Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
+          <div class="toggle-row"><span class="toggle-label" data-t="show_contact">Show Contact Section</span><label class="toggle"><input type="checkbox" checked/><span class="slider"></span></label></div>
         </div>
       </div>
 
@@ -389,10 +428,206 @@
   </div>
 </div>
 
-<button class="save-bar" id="saveBar" onclick="saveAll()"><i class="fa fa-save"></i> Save Changes</button>
+<button class="save-bar" id="saveBar" onclick="saveAll()"><i class="fa fa-save"></i> <span data-t="save_changes">Save Changes</span></button>
 <div class="toast" id="toast">✓ Changes saved successfully!</div>
 
 <script>
+// ===== ADMIN TRANSLATIONS =====
+const adminT = {
+  en: {
+    login_sub: "Admin Panel — Nikan Ghafari",
+    login_placeholder: "Enter password...",
+    login_btn: "Login",
+    header_title: "⚙ Admin Panel",
+    view_site: "View Site",
+    logout: "Logout",
+    side_hero: "Hero Section",
+    side_about: "About Me",
+    side_video: "Video",
+    side_ventures: "Ventures",
+    side_contact: "Contact",
+    side_chat: "Chat Messages",
+    side_settings: "Settings",
+    hero_h2: "Hero Section",
+    content: "Content",
+    eyebrow_label: "Eyebrow text",
+    tagline_label: "Tagline",
+    cta_label: "CTA Button text",
+    photo: "Photo",
+    upload_photo_hint: "Click to upload your photo",
+    bio_text: "Bio Text",
+    bio_en_label: "Bio (English)",
+    video_h2: "Hero Video",
+    upload_video: "Upload Video",
+    video_hint: "Upload your intro video. It will play automatically (muted) on the homepage.",
+    upload_video_hint: "Click to upload video (MP4 recommended)",
+    add_venture: "Add Venture",
+    tag_premium_supply: "Premium Supply",
+    tag_ai_tool: "AI Tool",
+    tag_trading: "Trading",
+    tag_ai: "AI",
+    edit_venture: "Edit Venture",
+    name_label: "Name",
+    tag_category_label: "Tag / Category",
+    description_label: "Description",
+    image_label: "Image",
+    upload_venture_img: "Upload venture image",
+    links_label: "Links (one per line, format: Platform|URL)",
+    save_venture: "Save Venture",
+    cancel: "Cancel",
+    contact_h2: "Contact Info",
+    phone_channels: "Phone & Channels",
+    phone_number_label: "Phone Number",
+    personal_id_label: "Personal Telegram/Bale/Eitaa ID",
+    saffron_id_label: "Saffron Channel ID",
+    dietai_id_label: "DietAI Channel ID",
+    clear_all: "Clear All",
+    bot_setup: "Telegram Bot Setup",
+    bot_setup_hint: "To receive messages on Telegram, enter your bot credentials.",
+    bot_token_label: "Bot Token (from @BotFather)",
+    chat_id_label: "Your Chat ID",
+    save_bot_settings: "Save Bot Settings",
+    no_messages: "No messages yet",
+    change_password: "Change Password",
+    current_password_label: "Current Password",
+    new_password_label: "New Password",
+    confirm_password_label: "Confirm New Password",
+    update_password: "Update Password",
+    section_visibility: "Section Visibility",
+    show_video: "Show Video Section",
+    show_about: "Show About Section",
+    show_ventures: "Show Ventures Section",
+    show_chat: "Show Chat Section",
+    show_contact: "Show Contact Section",
+    save_changes: "Save Changes",
+    incorrect_password: "Incorrect password.",
+    msg_password_updated: "Password updated!",
+    msg_venture_saved: "Venture saved!",
+    msg_bot_saved: "Bot settings saved! Update chat.js with these values.",
+    msg_messages_cleared: "Messages cleared",
+    msg_changes_saved: "Changes saved successfully!",
+    confirm_clear_messages: "Clear all chat messages?",
+    alert_current_pass_wrong: "Current password is incorrect.",
+    alert_pass_mismatch: "New passwords do not match.",
+    alert_pass_too_short: "Password must be at least 6 characters.",
+    video_processing: "⏳ Processing...",
+    video_saved: "✓ Video saved! It will appear on your homepage.",
+  },
+  fa: {
+    login_sub: "پنل مدیریت — نیکان غفاری",
+    login_placeholder: "رمز عبور را وارد کنید...",
+    login_btn: "ورود",
+    header_title: "⚙ پنل مدیریت",
+    view_site: "مشاهده سایت",
+    logout: "خروج",
+    side_hero: "بخش هدر",
+    side_about: "درباره من",
+    side_video: "ویدئو",
+    side_ventures: "فعالیت‌ها",
+    side_contact: "تماس",
+    side_chat: "پیام‌های چت",
+    side_settings: "تنظیمات",
+    hero_h2: "بخش هدر",
+    content: "محتوا",
+    eyebrow_label: "متن کوتاه بالای عنوان",
+    tagline_label: "شعار / توضیح کوتاه",
+    cta_label: "متن دکمه",
+    photo: "عکس",
+    upload_photo_hint: "برای آپلود عکس کلیک کنید",
+    bio_text: "متن بیوگرافی",
+    bio_en_label: "بیوگرافی (انگلیسی)",
+    video_h2: "ویدئوی هدر",
+    upload_video: "آپلود ویدئو",
+    video_hint: "ویدئوی معرفی خودتان را آپلود کنید. به صورت خودکار (بی‌صدا) در صفحه اصلی پخش می‌شود.",
+    upload_video_hint: "برای آپلود ویدئو کلیک کنید (فرمت MP4 پیشنهاد می‌شود)",
+    add_venture: "افزودن فعالیت",
+    tag_premium_supply: "عرضه درجه یک",
+    tag_ai_tool: "ابزار هوش مصنوعی",
+    tag_trading: "معامله‌گری",
+    tag_ai: "هوش مصنوعی",
+    edit_venture: "ویرایش فعالیت",
+    name_label: "نام",
+    tag_category_label: "برچسب / دسته‌بندی",
+    description_label: "توضیحات",
+    image_label: "تصویر",
+    upload_venture_img: "آپلود تصویر فعالیت",
+    links_label: "لینک‌ها (هر خط یک مورد، فرمت: پلتفرم|آدرس)",
+    save_venture: "ذخیره فعالیت",
+    cancel: "انصراف",
+    contact_h2: "اطلاعات تماس",
+    phone_channels: "تلفن و کانال‌ها",
+    phone_number_label: "شماره تلفن",
+    personal_id_label: "آیدی شخصی تلگرام/بله/ایتا",
+    saffron_id_label: "آیدی کانال زعفران",
+    dietai_id_label: "آیدی کانال DietAI",
+    clear_all: "پاک کردن همه",
+    bot_setup: "تنظیمات بات تلگرام",
+    bot_setup_hint: "برای دریافت پیام‌ها در تلگرام، اطلاعات بات خود را وارد کنید.",
+    bot_token_label: "توکن بات (از BotFather@)",
+    chat_id_label: "آیدی چت شما (Chat ID)",
+    save_bot_settings: "ذخیره تنظیمات بات",
+    no_messages: "هنوز پیامی وجود ندارد",
+    change_password: "تغییر رمز عبور",
+    current_password_label: "رمز فعلی",
+    new_password_label: "رمز جدید",
+    confirm_password_label: "تکرار رمز جدید",
+    update_password: "بروزرسانی رمز",
+    section_visibility: "نمایش بخش‌ها",
+    show_video: "نمایش بخش ویدئو",
+    show_about: "نمایش بخش درباره من",
+    show_ventures: "نمایش بخش فعالیت‌ها",
+    show_chat: "نمایش بخش چت",
+    show_contact: "نمایش بخش تماس",
+    save_changes: "ذخیره تغییرات",
+    incorrect_password: "رمز عبور اشتباه است.",
+    msg_password_updated: "رمز عبور بروزرسانی شد!",
+    msg_venture_saved: "فعالیت ذخیره شد!",
+    msg_bot_saved: "تنظیمات بات ذخیره شد! این مقادیر را در chat.js وارد کنید.",
+    msg_messages_cleared: "پیام‌ها پاک شدند",
+    msg_changes_saved: "تغییرات با موفقیت ذخیره شد!",
+    confirm_clear_messages: "همه پیام‌های چت پاک شوند؟",
+    alert_current_pass_wrong: "رمز فعلی اشتباه است.",
+    alert_pass_mismatch: "رمزهای جدید مطابقت ندارند.",
+    alert_pass_too_short: "رمز عبور باید حداقل ۶ کاراکتر باشد.",
+    video_processing: "⏳ در حال پردازش...",
+    video_saved: "✓ ویدئو ذخیره شد! در صفحه اصلی نمایش داده می‌شود.",
+  }
+};
+
+let adminLang = localStorage.getItem('ng_admin_lang') || 'en';
+
+function setAdminLang(lang) {
+  adminLang = lang;
+  localStorage.setItem('ng_admin_lang', lang);
+  applyAdminLang();
+}
+
+function applyAdminLang() {
+  const t = adminT[adminLang];
+  const dir = adminLang === 'fa' ? 'rtl' : 'ltr';
+  document.body.dir = dir;
+  document.documentElement.lang = adminLang;
+
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.getAttribute('data-t');
+    if (t[key]) el.textContent = t[key];
+  });
+  document.querySelectorAll('[data-t-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-t-placeholder');
+    if (t[key]) el.placeholder = t[key];
+  });
+
+  // Update lang switch buttons
+  ['loginLangEn','panelLangEn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('active', adminLang === 'en');
+  });
+  ['loginLangFa','panelLangFa'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('active', adminLang === 'fa');
+  });
+}
+
 // ---- AUTH ----
 const ADMIN_PASS_KEY = 'ng_admin_pass';
 const DEFAULT_PASS = 'nikan2024';
@@ -405,7 +640,7 @@ function login() {
     document.getElementById('adminPanel').style.display = 'block';
     loadSaved();
   } else {
-    document.getElementById('loginErr').textContent = 'Incorrect password.';
+    document.getElementById('loginErr').textContent = adminT[adminLang].incorrect_password;
   }
 }
 
@@ -416,15 +651,16 @@ function logout() {
 }
 
 function changePassword() {
+  const t = adminT[adminLang];
   const cur = document.getElementById('currentPass').value;
   const stored = localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_PASS;
-  if (cur !== stored) { alert('Current password is incorrect.'); return; }
+  if (cur !== stored) { alert(t.alert_current_pass_wrong); return; }
   const np = document.getElementById('newPass').value;
   const cp = document.getElementById('confirmPass').value;
-  if (np !== cp) { alert('New passwords do not match.'); return; }
-  if (np.length < 6) { alert('Password must be at least 6 characters.'); return; }
+  if (np !== cp) { alert(t.alert_pass_mismatch); return; }
+  if (np.length < 6) { alert(t.alert_pass_too_short); return; }
   localStorage.setItem(ADMIN_PASS_KEY, np);
-  showToast('Password updated!');
+  showToast(t.msg_password_updated);
 }
 
 // ---- TABS ----
@@ -436,11 +672,10 @@ function showTab(name) {
   document.getElementById('saveBar').classList.add('visible');
 }
 
-// ---- LANG TABS ----
+// ---- LANG TABS (content language, separate from UI language) ----
 function switchLangTab(btn, section, lang) {
   btn.closest('.admin-card').querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
-  // Could show/hide lang-specific fields here
 }
 
 // ---- IMAGE PREVIEWS ----
@@ -471,14 +706,15 @@ function previewVentImg(event) {
 
 // ---- VIDEO ----
 function handleVideoUpload(event) {
+  const t = adminT[adminLang];
   const file = event.target.files[0];
   if (!file) return;
   const status = document.getElementById('videoUploadStatus');
-  status.textContent = '⏳ Processing...';
+  status.textContent = t.video_processing;
   const reader = new FileReader();
   reader.onload = e => {
     localStorage.setItem('ng_video_url', e.target.result);
-    status.textContent = '✓ Video saved! It will appear on your homepage.';
+    status.textContent = t.video_saved;
   };
   reader.readAsDataURL(file);
 }
@@ -509,7 +745,7 @@ function showAddVenture() {
 }
 
 function saveVenture() {
-  showToast('Venture saved!');
+  showToast(adminT[adminLang].msg_venture_saved);
   document.getElementById('ventureEditForm').style.display = 'none';
 }
 
@@ -519,19 +755,20 @@ function saveBotSettings() {
   const chatId = document.getElementById('chatId').value.trim();
   if (token) localStorage.setItem('ng_bot_token', token);
   if (chatId) localStorage.setItem('ng_chat_id', chatId);
-  showToast('Bot settings saved! Update chat.js with these values.');
+  showToast(adminT[adminLang].msg_bot_saved);
 }
 
 function clearMessages() {
-  if (confirm('Clear all chat messages?')) {
-    document.getElementById('adminMsgList').innerHTML = '<div class="empty-state"><i class="fa fa-comments"></i><p>No messages yet</p></div>';
-    showToast('Messages cleared');
+  const t = adminT[adminLang];
+  if (confirm(t.confirm_clear_messages)) {
+    document.getElementById('adminMsgList').innerHTML = `<div class="empty-state"><i class="fa fa-comments"></i><p>${t.no_messages}</p></div>`;
+    showToast(t.msg_messages_cleared);
   }
 }
 
 // ---- SAVE ----
 function saveAll() {
-  showToast('Changes saved successfully!');
+  showToast(adminT[adminLang].msg_changes_saved);
 }
 
 function loadSaved() {
@@ -557,6 +794,9 @@ function showToast(msg) {
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') login();
 });
+
+// Init language on load
+applyAdminLang();
 </script>
 </body>
 </html>
