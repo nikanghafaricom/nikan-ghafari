@@ -54,6 +54,8 @@
     }
     .login-box button.login-submit:hover { background: var(--gold-light); }
     .login-err { color: var(--danger); font-size: 0.85rem; margin-top: 12px; min-height: 1em; }
+    .reset-link { color: var(--text-sub); font-size: 0.78rem; margin-top: 16px; cursor: pointer; text-decoration: underline; }
+    .reset-link:hover { color: var(--gold); }
 
     /* ADMIN LAYOUT */
     #adminPanel { display: none; }
@@ -222,6 +224,7 @@
     <input type="password" id="adminPass" data-t-placeholder="login_placeholder" placeholder="Enter password..." onkeydown="if(event.key==='Enter')login()"/>
     <button class="login-submit" data-t="login_btn" onclick="login()">Login</button>
     <p class="login-err" id="loginErr"></p>
+    <p class="reset-link" id="resetLink" onclick="resetPassword()" data-t="forgot_password">Forgot password? Reset to default</p>
   </div>
 </div>
 
@@ -438,6 +441,9 @@ const adminT = {
     login_sub: "Admin Panel — Nikan Ghafari",
     login_placeholder: "Enter password...",
     login_btn: "Login",
+    forgot_password: "Forgot password? Reset to default",
+    confirm_reset_password: "This will reset the admin password back to the default (nikan2024). Continue?",
+    msg_password_reset: "Password has been reset to: nikan2024",
     header_title: "⚙ Admin Panel",
     view_site: "View Site",
     logout: "Logout",
@@ -517,6 +523,9 @@ const adminT = {
     login_sub: "پنل مدیریت — نیکان غفاری",
     login_placeholder: "رمز عبور را وارد کنید...",
     login_btn: "ورود",
+    forgot_password: "رمز را فراموش کردید؟ بازنشانی به حالت پیش‌فرض",
+    confirm_reset_password: "این کار رمز عبور پنل را به حالت پیش‌فرض (nikan2024) برمی‌گرداند. ادامه می‌دهید؟",
+    msg_password_reset: "رمز عبور بازنشانی شد به: nikan2024",
     header_title: "⚙ پنل مدیریت",
     view_site: "مشاهده سایت",
     logout: "خروج",
@@ -648,6 +657,15 @@ function logout() {
   document.getElementById('loginScreen').style.display = 'flex';
   document.getElementById('adminPanel').style.display = 'none';
   document.getElementById('adminPass').value = '';
+}
+
+function resetPassword() {
+  const t = adminT[adminLang];
+  if (confirm(t.confirm_reset_password)) {
+    localStorage.removeItem(ADMIN_PASS_KEY);
+    document.getElementById('loginErr').textContent = '';
+    alert(t.msg_password_reset);
+  }
 }
 
 function changePassword() {
