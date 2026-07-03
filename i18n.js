@@ -52,8 +52,13 @@ const translations = {
     hero_cta: "بیشتر بدانید",
     video_placeholder: "داستان من — به زودی",
     unmute: "برای صدا لمس کنید",
+    about_label: "من کیستم",
     about_title: "درباره من",
     about_body: "من نیکان غفاری هستم — کارآفرین و متخصص در چندین حوزه تاثیرگذار. از عرضه زعفران درجه یک و ابزارهای هوش مصنوعی تا معامله‌گری حرفه‌ای در بازارهای مالی، در هر حوزه‌ای که فعالیت می‌کنم سنت و نوآوری را با هم ترکیب می‌کنم.",
+    stat_ventures: "فعالیت‌های فعال",
+    stat_langs: "زبان‌ها",
+    stat_drive: "اهداف و انگیزه",
+    ventures_label: "کارهایی که انجام می‌دهم",
     ventures_title: "فعالیت‌هایم",
     tag_saffron: "عرضه درجه یک",
     desc_saffron: "عرضه‌کننده زعفران درجه یک با بالاترین کیفیت، قدرت رنگدهی بسیار بالا همراه با برگه آزمایشگاه.",
@@ -64,11 +69,13 @@ const translations = {
     desc_market: "معامله‌گر حرفه‌ای بازارهای مالی با دید تیز برای فرصت‌ها، مدیریت ریسک و موقعیت‌یابی استراتژیک.",
     tag_ai: "هوش مصنوعی",
     desc_ai: "متخصص هوش مصنوعی در خط مقدم نوآوری. ساخت و پیاده‌سازی سیستم‌های هوشمند.",
+    chat_label: "پل‌های ارتباطی",
     chat_title: "چت آنلاین",
     chat_welcome: "👋 خوش آمدید! لطفاً نام خود را وارد کنید.",
     name_placeholder: "نام شما...",
     start_chat: "شروع چت",
     msg_placeholder: "پیام خود را بنویسید...",
+    contact_label: "ارتباط با من",
     contact_title: "ارتباط با ما",
     phone: "تلفن",
     saffron_channel: "بخش زعفران",
@@ -137,7 +144,8 @@ function applyLang() {
 
   // Update label
   const labels = { en: 'EN', fa: 'FA', ar: 'AR' };
-  document.querySelector('.lang-label').textContent = labels[currentLang];
+  const langLabelEl = document.querySelector('.lang-label');
+  if (langLabelEl) langLabelEl.textContent = labels[currentLang];
 
   // Translate all elements
   document.querySelectorAll('[data-i18n]').forEach(el => {
