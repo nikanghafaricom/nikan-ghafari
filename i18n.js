@@ -48,7 +48,7 @@ const translations = {
     nav_contact: "تماس",
     nav_admin: "⚙ پنل مدیریت",
     hero_eyebrow: "عرضه کننده زعفران ممتاز · متخصص هوش مصنوعی · معامله‌گر بازارهای مالی",
-    hero_tagline: "فعال در فناوری، بازارهای مالی و تجارت.",
+    hero_tagline: "فعال در فناوری, بازارهای مالی و تجارت.",
     hero_cta: "بیشتر بدانید",
     video_placeholder: "داستان من — به زودی",
     unmute: "برای صدا لمس کنید",
@@ -131,7 +131,6 @@ function setLang(lang) {
   currentLang = lang;
   localStorage.setItem('ng_lang', lang);
   applyLang();
-  // Close dropdown
   document.getElementById('langDropdown').classList.remove('open');
 }
 
@@ -142,23 +141,20 @@ function applyLang() {
   document.body.dir = dir;
   document.querySelector('html').dir = dir;
 
-  // Update label
   const labels = { en: 'EN', fa: 'FA', ar: 'AR' };
   const langLabelEl = document.querySelector('.lang-label');
   if (langLabelEl) langLabelEl.textContent = labels[currentLang];
 
-  // Translate all elements
+  // Fixed logic to allow empty strings smoothly
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (t[key]) el.textContent = t[key];
+    if (t && key in t) el.textContent = t[key];
   });
 
-  // Placeholders
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const key = el.getAttribute('data-i18n-placeholder');
-    if (t[key]) el.placeholder = t[key];
+    if (t && key in t) el.placeholder = t[key];
   });
 }
 
-// Init on load
 document.addEventListener('DOMContentLoaded', () => { applyLang(); });
