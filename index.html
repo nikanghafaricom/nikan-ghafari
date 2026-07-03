@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -15,7 +15,7 @@
     <div class="logo">Nikan Ghafari</div>
     <div class="header-actions">
       <button class="lang-btn" id="langBtn" title="Language">
-        <span class="lang-label">EN</span>
+        <span class="lang-label">FA</span>
         <i class="fa fa-globe"></i>
       </button>
       <div class="lang-dropdown" id="langDropdown">
@@ -37,26 +37,22 @@
 <nav class="nav-drawer" id="navDrawer">
   <button class="nav-close" id="navClose"><i class="fa fa-times"></i></button>
   <ul>
-    <li><a href="#about" class="nav-link" data-i18n="nav_about">About Me</a></li>
-    <li><a href="#ventures" class="nav-link" data-i18n="nav_ventures">My Ventures</a></li>
-    <li><a href="#chat" class="nav-link" data-i18n="nav_chat">Online Chat</a></li>
-    <li><a href="#contact" class="nav-link" data-i18n="nav_contact">Contact</a></li>
+    <li><a href="#about" class="nav-link" data-i18n="nav_about">درباره من</a></li>
+    <li><a href="#ventures" class="nav-link" data-i18n="nav_ventures">فعالیت‌های من</a></li>
+    <li><a href="#chat" class="nav-link" data-i18n="nav_chat">چت آنلاین</a></li>
+    <li><a href="#contact" class="nav-link" data-i18n="nav_contact">ارتباط با من</a></li>
   </ul>
 </nav>
 
 <section id="hero">
-  <div class="hero-bg">
-    <div class="hero-particles" id="heroParticles"></div>
-  </div>
+  <div class="hero-bg"><div class="hero-particles" id="heroParticles"></div></div>
   <div class="hero-content">
-    <p class="hero-eyebrow" data-i18n="hero_eyebrow">Entrepreneur · AI Specialist · Trader</p>
+    <p class="hero-eyebrow" data-i18n="hero_eyebrow">متخصص هوش مصنوعی · توسعه‌دهنده سیستم‌های هوشمند مالی · فعال اقتصادی</p>
     <h1 class="hero-name">Nikan Ghafari</h1>
-    <p class="hero-tagline" data-i18n="hero_tagline">Building at the intersection of technology, markets & nature.</p>
-    <a href="#about" class="hero-cta" data-i18n="hero_cta">Discover More</a>
+    <p class="hero-tagline" data-i18n="hero_tagline">تلاقی فناوری، بازارهای مالی و تجارت.</p>
+    <a href="#about" class="hero-cta" data-i18n="hero_cta">بیشتر بدانید</a>
   </div>
-  <div class="hero-scroll-hint">
-    <span></span>
-  </div>
+  <div class="hero-scroll-hint"><span></span></div>
 </section>
 
 <section id="video-section">
@@ -64,17 +60,12 @@
     <div class="video-placeholder" id="videoPlaceholder">
       <div class="video-upload-msg">
         <i class="fa fa-play-circle"></i>
-        <p data-i18n="video_placeholder">My Story — Coming Soon</p>
+        <p data-i18n="video_placeholder">داستان من — به زودی</p>
       </div>
     </div>
-    <video id="mainVideo" muted playsinline style="display:none;">
-      <source src="" type="video/mp4"/>
-    </video>
+    <video id="mainVideo" muted playsinline style="display:none;"><source src="" type="video/mp4"/></video>
     <div class="video-controls" id="videoControls" style="display:none;">
-      <button class="sound-btn" id="soundBtn">
-        <i class="fa fa-volume-mute" id="soundIcon"></i>
-        <span data-i18n="unmute">Tap to unmute</span>
-      </button>
+      <button class="sound-btn" id="soundBtn"><i class="fa fa-volume-mute" id="soundIcon"></i><span data-i18n="unmute">صدا</span></button>
     </div>
   </div>
 </section>
@@ -83,117 +74,59 @@
   <div class="container">
     <div class="about-grid">
       <div class="about-text">
-        <h2 class="section-title" data-i18n="about_title">About Me</h2>
-        <p class="about-body" data-i18n="about_body">I am Nikan Ghafari — an entrepreneur and specialist operating across multiple high-impact domains. From premium saffron supply and AI-powered tools to professional financial trading, I build purposeful ventures that merge tradition with innovation.</p>
+        <h2 class="section-title" data-i18n="about_title">درباره من</h2>
+        <h3 class="about-name" style="font-weight:bold; font-size:1.5rem; margin-bottom:15px; color:var(--primary-color, #b392ac);">Nikan Ghafari</h3>
+        <p class="about-body" data-i18n="about_body">من متخصص هوش مصنوعی، توسعه‌دهنده سیستم‌های هوشمند مالی و فعال اقتصادی در حوزه طلای سرخ ایران هستم. محور اصلی فعالیت‌هایم بر طراحی ابزارهای مبتنی بر هوش مصنوعی، ساخت ایجنت‌های نوین، معامله‌گری در بازارهای مالی، و همچنین تأمین و عرضه زعفران درجه‌یک قائنات استوار است.</p>
       </div>
-      <div class="about-image-wrap">
-        <div class="about-image-placeholder">
-          <i class="fa fa-user"></i>
-        </div>
-      </div>
+      <div class="about-image-wrap"><div class="about-image-placeholder"><i class="fa fa-user"></i></div></div>
     </div>
   </div>
 </section>
 
 <section id="ventures">
   <div class="container">
-    <h2 class="section-title" data-i18n="ventures_title">My Ventures</h2>
-    <div class="ventures-grid" id="venturesGrid">
-
-      <div class="venture-card" data-venture="saffron">
-        <div class="venture-image-wrap">
-          <div class="venture-img-placeholder saffron-bg">
-            <i class="fa fa-seedling"></i>
-          </div>
-        </div>
+    <h2 class="section-title" data-i18n="ventures_title">فعالیت‌های من</h2>
+    <div class="ventures-grid">
+      <div class="venture-card">
+        <div class="venture-image-wrap"><div class="venture-img-placeholder saffron-bg"><i class="fa fa-seedling"></i></div></div>
         <div class="venture-content">
-          <div class="venture-tag" data-i18n="tag_saffron">Premium Supply</div>
+          <div class="venture-tag" data-i18n="tag_saffron">عرضه درجه یک</div>
           <h3 class="venture-name">Saffron</h3>
-          <p class="venture-desc" data-i18n="desc_saffron">Premium saffron supplier delivering the finest quality directly to markets. Rooted in heritage, committed to excellence.</p>
+          <p class="venture-desc" data-i18n="desc_saffron">عرضه‌کننده زعفران درجه یک با بالاترین کیفیت، قدرت رنگدهی بسیار بالا همراه با برگه آزمایشگاه.</p>
           <div class="venture-links">
             <a href="https://t.me/ghafari_saffron" target="_blank" class="vlink"><i class="fab fa-telegram"></i> Telegram</a>
-            <a href="https://ble.ir/ghafari_saffron" target="_blank" class="vlink"><i class="fa fa-comments"></i> Bale</a>
             <a href="https://rubika.ir/ghafari_saffron" target="_blank" class="vlink"><i class="fa fa-circle"></i> Rubika</a>
           </div>
         </div>
       </div>
-
-      <div class="venture-card" data-venture="dietai">
-        <div class="venture-image-wrap">
-          <div class="venture-img-placeholder dietai-bg">
-            <i class="fa fa-brain"></i>
-          </div>
-        </div>
+      <div class="venture-card">
+        <div class="venture-image-wrap"><div class="venture-img-placeholder dietai-bg"><i class="fa fa-brain"></i></div></div>
         <div class="venture-content">
-          <div class="venture-tag" data-i18n="tag_dietai">AI Tool</div>
+          <div class="venture-tag" data-i18n="tag_dietai">ابزار هوش مصنوعی</div>
           <h3 class="venture-name">DietAI</h3>
-          <p class="venture-desc" data-i18n="desc_dietai">Developer of an AI-powered diet & nutrition planning tool. Smart, personalized, and science-driven dietary guidance.</p>
+          <p class="venture-desc" data-i18n="desc_dietai">توسعه‌دهنده ابزار هوش مصنوعی برنامه‌ریزی رژیم و تغذیه. راهنمایی هوشمند، شخصی‌سازی شده و مبتنی بر علم.</p>
           <div class="venture-links">
             <a href="https://t.me/mrgh_link" target="_blank" class="vlink"><i class="fab fa-telegram"></i> @mrgh_link</a>
-            <a href="#" class="vlink vlink-soon" data-i18n="try_tool"><i class="fa fa-rocket"></i> Try Tool — Soon</a>
+            <a href="#" class="vlink vlink-soon" data-i18n="try_tool"><i class="fa fa-rocket"></i> امتحان کنید — به زودی</a>
           </div>
         </div>
       </div>
-
-      <div class="venture-card" data-venture="market">
-        <div class="venture-image-wrap">
-          <div class="venture-img-placeholder market-bg">
-            <i class="fa fa-chart-line"></i>
-          </div>
-        </div>
-        <div class="venture-content">
-          <div class="venture-tag" data-i18n="tag_market">Trading</div>
-          <h3 class="venture-name">Market Edge</h3>
-          <p class="venture-desc" data-i18n="desc_market">Professional financial markets trader with a sharp eye for opportunity, risk management, and strategic positioning.</p>
-          <div class="venture-links">
-            <a href="https://t.me/NikanGhafari" target="_blank" class="vlink"><i class="fab fa-telegram"></i> @NikanGhafari</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="venture-card" data-venture="ai">
-        <div class="venture-image-wrap">
-          <div class="venture-img-placeholder ai-bg">
-            <i class="fa fa-microchip"></i>
-          </div>
-        </div>
-        <div class="venture-content">
-          <div class="venture-tag" data-i18n="tag_ai">AI</div>
-          <h3 class="venture-name">AI Specialist</h3>
-          <p class="venture-desc" data-i18n="desc_ai">Artificial intelligence expert operating at the forefront of innovation. Building and implementing intelligent systems.</p>
-          <div class="venture-links">
-            <a href="https://t.me/NikanGhafari" target="_blank" class="vlink"><i class="fab fa-telegram"></i> @NikanGhafari</a>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
 
 <section id="chat">
   <div class="container">
-    <h2 class="section-title" data-i18n="chat_title">Online Chat</h2>
+    <h2 class="section-title" data-i18n="chat_title">چت آنلاین</h2>
     <div class="chat-box">
-      <div class="chat-messages" id="chatMessages">
-        <div class="chat-msg system">
-          <span data-i18n="chat_welcome">👋 Welcome! Please enter your name to start chatting.</span>
-        </div>
-      </div>
+      <div class="chat-messages" id="chatMessages"><div class="chat-msg system"><span data-i18n="chat_welcome">👋 خوش آمدید! لطفاً نام خود را وارد کنید.</span></div></div>
       <div class="chat-name-prompt" id="chatNamePrompt">
-        <input type="text" id="chatNameInput" placeholder="Your name..." data-i18n-placeholder="name_placeholder" maxlength="30"/>
-        <button onclick="startChat()" data-i18n="start_chat">Start Chat</button>
+        <input type="text" id="chatNameInput" placeholder="نام شما..." data-i18n-placeholder="name_placeholder"/>
+        <button onclick="startChat()" data-i18n="start_chat">شروع چت</button>
       </div>
       <div class="chat-input-area" id="chatInputArea" style="display:none;">
-        <div class="chat-media-preview" id="mediaPreview"></div>
-        <div class="chat-toolbar">
-          <label class="media-btn" title="Attach file">
-            <i class="fa fa-paperclip"></i>
-            <input type="file" id="mediaInput" accept="image/*,video/*" style="display:none;" onchange="previewMedia(event)"/>
-          </label>
-          <input type="text" id="chatInput" placeholder="Type a message..." data-i18n-placeholder="msg_placeholder" onkeydown="if(event.key==='Enter')sendMessage()"/>
-          <button class="send-btn" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
-        </div>
+        <input type="text" id="chatInput" placeholder="پیام خود را بنویسید..." data-i18n-placeholder="msg_placeholder" onkeydown="if(event.key==='Enter')sendMessage()"/>
+        <button onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
       </div>
     </div>
   </div>
@@ -201,34 +134,51 @@
 
 <section id="contact">
   <div class="container">
-    <h2 class="section-title" data-i18n="contact_title">Contact</h2>
+    <h2 class="section-title" data-i18n="contact_title">ارتباط با من</h2>
     <div class="contact-grid">
-      <a href="tel:+989378223550" class="contact-card">
-        <i class="fa fa-phone"></i>
+      <div class="contact-card no-click">
+        <i class="fa fa-phone-alt"></i>
         <div>
-          <span class="contact-type" data-i18n="phone">Phone</span>
-          <span class="contact-val">+98 937 822 3550</span>
+          <span class="contact-type" data-i18n="c_phone_wa">تلفن و واتساپ</span>
+          <span class="contact-val" dir="ltr">+98 937 822 3550</span>
         </div>
-      </a>
+      </div>
       <a href="https://t.me/NikanGhafari" target="_blank" class="contact-card">
         <i class="fab fa-telegram"></i>
         <div>
-          <span class="contact-type">Telegram · Bale · Eitaa</span>
+          <span class="contact-type"><span data-i18n="c_mgmt">مدیریت</span> (Telegram)</span>
           <span class="contact-val">@NikanGhafari</span>
         </div>
       </a>
-      <a href="https://t.me/ghafari_saffron" target="_blank" class="contact-card">
+      <div class="contact-card multi-link">
         <i class="fa fa-seedling"></i>
         <div>
-          <span class="contact-type" data-i18n="saffron_channel">Saffron Channel</span>
-          <span class="contact-val">@ghafari_saffron</span>
+          <span class="contact-type" data-i18n="c_saffron">بخش زعفران</span>
+          <div class="contact-icons" style="margin-top: 5px; display: flex; gap: 15px;">
+             <a href="https://t.me/ghafari_saffron" target="_blank" style="color: inherit; font-size: 1.2rem;" title="Telegram"><i class="fab fa-telegram"></i></a>
+             <a href="https://rubika.ir/ghafari_saffron" target="_blank" style="color: inherit; font-size: 1.2rem;" title="Rubika"><i class="fa fa-circle"></i></a>
+          </div>
         </div>
-      </a>
+      </div>
       <a href="https://t.me/mrgh_link" target="_blank" class="contact-card">
         <i class="fa fa-brain"></i>
         <div>
-          <span class="contact-type" data-i18n="dietai_channel">DietAI Channel</span>
+          <span class="contact-type" data-i18n="c_dietai">پشتیبانی ابزار رژیم غذایی تلگرام</span>
           <span class="contact-val">@mrgh_link</span>
+        </div>
+      </a>
+      <a href="https://ble.ir/NikanGhafari" target="_blank" class="contact-card">
+        <i class="fa fa-comments"></i>
+        <div>
+          <span class="contact-type" data-i18n="c_bale">پشتیبانی بله</span>
+          <span class="contact-val">@NikanGhafari</span>
+        </div>
+      </a>
+      <a href="https://eitaa.com/NikanGhafari" target="_blank" class="contact-card">
+        <i class="fa fa-paper-plane"></i>
+        <div>
+          <span class="contact-type" data-i18n="c_eitaa">پشتیبانی ایتا</span>
+          <span class="contact-val">@NikanGhafari</span>
         </div>
       </a>
     </div>
@@ -236,7 +186,7 @@
 </section>
 
 <footer>
-  <p>© 2024 Nikan Ghafari. <span data-i18n="footer_rights">All rights reserved.</span></p>
+  <p>© 2026 Nikan Ghafari. <span data-i18n="footer_rights">تمامی حقوق محفوظ است.</span></p>
 </footer>
 
 <script src="i18n.js"></script>
