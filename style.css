@@ -776,6 +776,25 @@ body[dir="rtl"] .chat-msg.user { border-bottom-right-radius: 12px; border-bottom
 .contact-type { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-sub); }
 .contact-val { font-size: 0.95rem; color: var(--text-main); font-weight: 500; }
 
+/* Custom multi-link alignment rules */
+.contact-icons {
+  display: flex !important;
+  gap: 15px;
+  margin-top: 8px;
+}
+.contact-icons a {
+  color: inherit;
+  font-size: 1.3rem;
+  transition: opacity 0.2s;
+  display: inline-block;
+}
+.contact-icons a:hover {
+  opacity: 0.75;
+}
+.contact-card.multi-link {
+  cursor: default !important;
+}
+
 /* ========== FOOTER ========== */
 footer {
   background: var(--navy);
