@@ -39,7 +39,7 @@ const translations = {
     phone: "Phone",
     saffron_channel: "Saffron Channel",
     dietai_channel: "DietAI Support Tool Channel",
-    footer_rights: "All rights reserved.",
+    footer_rights: "All rights reserved."
   },
   fa: {
     nav_about: "درباره من",
@@ -48,7 +48,7 @@ const translations = {
     nav_contact: "تماس",
     nav_admin: "⚙ پنل مدیریت",
     hero_eyebrow: "عرضه کننده زعفران ممتاز · متخصص هوش مصنوعی · معامله‌گر بازارهای مالی",
-    hero_tagline: "فعال در فناوری, بازارهای مالی و تجارت.",
+    hero_tagline: "فعال در فناوری، بازارهای مالی و تجارت.",
     hero_cta: "بیشتر بدانید",
     video_placeholder: "داستان من — به زودی",
     unmute: "برای صدا لمس کنید",
@@ -80,7 +80,7 @@ const translations = {
     phone: "تلفن",
     saffron_channel: "بخش زعفران",
     dietai_channel: "پشتیبانی ابزار رژیم غذایی",
-    footer_rights: "تمامی حقوق محفوظ است.",
+    footer_rights: "تمامی حقوق محفوظ است."
   },
   ar: {
     nav_about: "عني",
@@ -95,7 +95,7 @@ const translations = {
     unmute: "اضغط لتشغيل الصوت",
     about_label: "",
     about_title: "عني",
-    about_body: "أنا نيكان غفاري — رائد أعمال ومتخصص يعمل في مجالات متعددة عالية التأثير. من توريد الزعفران الفاخر وأدوات الذكاء الاصطناعي إلى التداول المالي الاحترافي، أبني مشاريع هادفة تمزج التراث بالابتكار.",
+    about_body: "أنا نيكان غفاري — رائد أعمال ومتخصص يعمل في مجالات متعددة عالية التأثير. من توريد الزعفران Фاخر وأدوات الذكاء الاصطناعي إلى التداول المالي الاحترافي، أبني مشاريع هادفة تمزج التراث بالابتكار.",
     stat_ventures: "",
     stat_langs: "",
     stat_drive: "",
@@ -121,7 +121,7 @@ const translations = {
     phone: "هاتف",
     saffron_channel: "قسم الزعفران",
     dietai_channel: "قناة دعم أداة النظام الغذائي",
-    footer_rights: "جميع الحقوق محفوظة.",
+    footer_rights: "جميع الحقوق محفوظة."
   }
 };
 
@@ -145,7 +145,6 @@ function applyLang() {
   const langLabelEl = document.querySelector('.lang-label');
   if (langLabelEl) langLabelEl.textContent = labels[currentLang];
 
-  // Fixed logic to allow empty strings smoothly
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (t && key in t) el.textContent = t[key];
