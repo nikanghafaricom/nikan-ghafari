@@ -45,14 +45,18 @@
 </nav>
 
 <section id="hero">
-  <div class="hero-bg"><div class="hero-particles" id="heroParticles"></div></div>
+  <div class="hero-bg">
+    <div class="hero-particles" id="heroParticles"></div>
+  </div>
   <div class="hero-content">
     <p class="hero-eyebrow" data-i18n="hero_eyebrow">Entrepreneur · AI Specialist · Trader</p>
     <h1 class="hero-name">Nikan Ghafari</h1>
     <p class="hero-tagline" data-i18n="hero_tagline">Building at the intersection of technology, markets & nature.</p>
     <a href="#about" class="hero-cta" data-i18n="hero_cta">Discover More</a>
   </div>
-  <div class="hero-scroll-hint"><span></span></div>
+  <div class="hero-scroll-hint">
+    <span></span>
+  </div>
 </section>
 
 <section id="video-section">
@@ -63,9 +67,14 @@
         <p data-i18n="video_placeholder">My Story — Coming Soon</p>
       </div>
     </div>
-    <video id="mainVideo" muted playsinline style="display:none;"><source src="" type="video/mp4"/></video>
+    <video id="mainVideo" muted playsinline style="display:none;">
+      <source src="" type="video/mp4"/>
+    </video>
     <div class="video-controls" id="videoControls" style="display:none;">
-      <button class="sound-btn" id="soundBtn"><i class="fa fa-volume-mute" id="soundIcon"></i><span data-i18n="unmute">Tap to unmute</span></button>
+      <button class="sound-btn" id="soundBtn">
+        <i class="fa fa-volume-mute" id="soundIcon"></i>
+        <span data-i18n="unmute">Tap to unmute</span>
+      </button>
     </div>
   </div>
 </section>
@@ -75,9 +84,13 @@
     <div class="about-grid">
       <div class="about-text">
         <h2 class="section-title" data-i18n="about_title">About Me</h2>
-        <p class="about-body" data-i18n="about_body">I am Nikan Ghafari — an entrepreneur and specialist operating across multiple high-impact domains.</p>
+        <p class="about-body" data-i18n="about_body">I am Nikan Ghafari — an entrepreneur and specialist operating across multiple high-impact domains. From premium saffron supply and AI-powered tools to professional financial trading, I build purposeful ventures that merge tradition with innovation.</p>
       </div>
-      <div class="about-image-wrap"><div class="about-image-placeholder"><i class="fa fa-user"></i></div></div>
+      <div class="about-image-wrap">
+        <div class="about-image-placeholder">
+          <i class="fa fa-user"></i>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -85,31 +98,75 @@
 <section id="ventures">
   <div class="container">
     <h2 class="section-title" data-i18n="ventures_title">My Ventures</h2>
-    <div class="ventures-grid">
-      <div class="venture-card">
-        <div class="venture-image-wrap"><div class="venture-img-placeholder saffron-bg"><i class="fa fa-seedling"></i></div></div>
+    <div class="ventures-grid" id="venturesGrid">
+
+      <div class="venture-card" data-venture="saffron">
+        <div class="venture-image-wrap">
+          <div class="venture-img-placeholder saffron-bg">
+            <i class="fa fa-seedling"></i>
+          </div>
+        </div>
         <div class="venture-content">
           <div class="venture-tag" data-i18n="tag_saffron">Premium Supply</div>
           <h3 class="venture-name">Saffron</h3>
-          <p class="venture-desc" data-i18n="desc_saffron">Premium saffron supplier delivering the finest quality.</p>
+          <p class="venture-desc" data-i18n="desc_saffron">Premium saffron supplier delivering the finest quality directly to markets. Rooted in heritage, committed to excellence.</p>
           <div class="venture-links">
             <a href="https://t.me/ghafari_saffron" target="_blank" class="vlink"><i class="fab fa-telegram"></i> Telegram</a>
+            <a href="https://ble.ir/ghafari_saffron" target="_blank" class="vlink"><i class="fa fa-comments"></i> Bale</a>
             <a href="https://rubika.ir/ghafari_saffron" target="_blank" class="vlink"><i class="fa fa-circle"></i> Rubika</a>
           </div>
         </div>
       </div>
-      <div class="venture-card">
-        <div class="venture-image-wrap"><div class="venture-img-placeholder dietai-bg"><i class="fa fa-brain"></i></div></div>
+
+      <div class="venture-card" data-venture="dietai">
+        <div class="venture-image-wrap">
+          <div class="venture-img-placeholder dietai-bg">
+            <i class="fa fa-brain"></i>
+          </div>
+        </div>
         <div class="venture-content">
           <div class="venture-tag" data-i18n="tag_dietai">AI Tool</div>
           <h3 class="venture-name">DietAI</h3>
-          <p class="venture-desc" data-i18n="desc_dietai">AI-powered diet & nutrition planning tool.</p>
+          <p class="venture-desc" data-i18n="desc_dietai">Developer of an AI-powered diet & nutrition planning tool. Smart, personalized, and science-driven dietary guidance.</p>
           <div class="venture-links">
             <a href="https://t.me/mrgh_link" target="_blank" class="vlink"><i class="fab fa-telegram"></i> @mrgh_link</a>
-            <a href="#" class="vlink vlink-soon" data-i18n="try_tool"><i class="fa fa-rocket"></i> Soon</a>
+            <a href="#" class="vlink vlink-soon" data-i18n="try_tool"><i class="fa fa-rocket"></i> Try Tool — Soon</a>
           </div>
         </div>
       </div>
+
+      <div class="venture-card" data-venture="market">
+        <div class="venture-image-wrap">
+          <div class="venture-img-placeholder market-bg">
+            <i class="fa fa-chart-line"></i>
+          </div>
+        </div>
+        <div class="venture-content">
+          <div class="venture-tag" data-i18n="tag_market">Trading</div>
+          <h3 class="venture-name">Market Edge</h3>
+          <p class="venture-desc" data-i18n="desc_market">Professional financial markets trader with a sharp eye for opportunity, risk management, and strategic positioning.</p>
+          <div class="venture-links">
+            <a href="https://t.me/NikanGhafari" target="_blank" class="vlink"><i class="fab fa-telegram"></i> @NikanGhafari</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="venture-card" data-venture="ai">
+        <div class="venture-image-wrap">
+          <div class="venture-img-placeholder ai-bg">
+            <i class="fa fa-microchip"></i>
+          </div>
+        </div>
+        <div class="venture-content">
+          <div class="venture-tag" data-i18n="tag_ai">AI</div>
+          <h3 class="venture-name">AI Specialist</h3>
+          <p class="venture-desc" data-i18n="desc_ai">Artificial intelligence expert operating at the forefront of innovation. Building and implementing intelligent systems.</p>
+          <div class="venture-links">
+            <a href="https://t.me/NikanGhafari" target="_blank" class="vlink"><i class="fab fa-telegram"></i> @NikanGhafari</a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -118,14 +175,25 @@
   <div class="container">
     <h2 class="section-title" data-i18n="chat_title">Online Chat</h2>
     <div class="chat-box">
-      <div class="chat-messages" id="chatMessages"><div class="chat-msg system"><span data-i18n="chat_welcome">👋 Welcome!</span></div></div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg system">
+          <span data-i18n="chat_welcome">👋 Welcome! Please enter your name to start chatting.</span>
+        </div>
+      </div>
       <div class="chat-name-prompt" id="chatNamePrompt">
-        <input type="text" id="chatNameInput" placeholder="Name..." data-i18n-placeholder="name_placeholder"/>
-        <button onclick="startChat()" data-i18n="start_chat">Start</button>
+        <input type="text" id="chatNameInput" placeholder="Your name..." data-i18n-placeholder="name_placeholder" maxlength="30"/>
+        <button onclick="startChat()" data-i18n="start_chat">Start Chat</button>
       </div>
       <div class="chat-input-area" id="chatInputArea" style="display:none;">
-        <input type="text" id="chatInput" placeholder="Message..." data-i18n-placeholder="msg_placeholder" onkeydown="if(event.key==='Enter')sendMessage()"/>
-        <button onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+        <div class="chat-media-preview" id="mediaPreview"></div>
+        <div class="chat-toolbar">
+          <label class="media-btn" title="Attach file">
+            <i class="fa fa-paperclip"></i>
+            <input type="file" id="mediaInput" accept="image/*,video/*" style="display:none;" onchange="previewMedia(event)"/>
+          </label>
+          <input type="text" id="chatInput" placeholder="Type a message..." data-i18n-placeholder="msg_placeholder" onkeydown="if(event.key==='Enter')sendMessage()"/>
+          <button class="send-btn" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+        </div>
       </div>
     </div>
   </div>
@@ -135,57 +203,44 @@
   <div class="container">
     <h2 class="section-title" data-i18n="contact_title">Contact</h2>
     <div class="contact-grid">
-      <div class="contact-card no-click">
-        <i class="fa fa-phone-alt"></i>
+      <a href="tel:+989378223550" class="contact-card">
+        <i class="fa fa-phone"></i>
         <div>
-          <span class="contact-type" data-i18n="c_phone_wa">Phone & WhatsApp</span>
-          <span class="contact-val" dir="ltr">+98 937 822 3550</span>
+          <span class="contact-type" data-i18n="phone">Phone</span>
+          <span class="contact-val">+98 937 822 3550</span>
         </div>
-      </div>
+      </a>
       <a href="https://t.me/NikanGhafari" target="_blank" class="contact-card">
         <i class="fab fa-telegram"></i>
         <div>
-          <span class="contact-type"><span data-i18n="c_mgmt">Management</span> (Telegram)</span>
+          <span class="contact-type">Telegram · Bale · Eitaa</span>
           <span class="contact-val">@NikanGhafari</span>
         </div>
       </a>
-      <div class="contact-card multi-link">
+      <a href="https://t.me/ghafari_saffron" target="_blank" class="contact-card">
         <i class="fa fa-seedling"></i>
         <div>
-          <span class="contact-type" data-i18n="c_saffron">Saffron Section</span>
-          <div class="contact-icons">
-             <a href="https://t.me/ghafari_saffron" target="_blank"><i class="fab fa-telegram"></i></a>
-             <a href="https://rubika.ir/ghafari_saffron" target="_blank"><i class="fa fa-circle"></i></a>
-          </div>
+          <span class="contact-type" data-i18n="saffron_channel">Saffron Channel</span>
+          <span class="contact-val">@ghafari_saffron</span>
         </div>
-      </div>
+      </a>
       <a href="https://t.me/mrgh_link" target="_blank" class="contact-card">
         <i class="fa fa-brain"></i>
         <div>
-          <span class="contact-type" data-i18n="c_dietai">DietAI Support (Telegram)</span>
+          <span class="contact-type" data-i18n="dietai_channel">DietAI Channel</span>
           <span class="contact-val">@mrgh_link</span>
-        </div>
-      </a>
-      <a href="https://ble.ir/NikanGhafari" target="_blank" class="contact-card">
-        <i class="fa fa-comments"></i>
-        <div>
-          <span class="contact-type" data-i18n="c_bale">Bale Support</span>
-          <span class="contact-val">@NikanGhafari</span>
-        </div>
-      </a>
-      <a href="https://eitaa.com/NikanGhafari" target="_blank" class="contact-card">
-        <i class="fa fa-paper-plane"></i>
-        <div>
-          <span class="contact-type" data-i18n="c_eitaa">Eitaa Support</span>
-          <span class="contact-val">@NikanGhafari</span>
         </div>
       </a>
     </div>
   </div>
 </section>
 
-<footer><p>© 2024 Nikan Ghafari. <span data-i18n="footer_rights">All rights reserved.</span></p></footer>
+<footer>
+  <p>© 2024 Nikan Ghafari. <span data-i18n="footer_rights">All rights reserved.</span></p>
+</footer>
 
-<script src="i18n.js"></script><script src="chat.js"></script><script src="main.js"></script>
+<script src="i18n.js"></script>
+<script src="chat.js"></script>
+<script src="main.js"></script>
 </body>
 </html>
