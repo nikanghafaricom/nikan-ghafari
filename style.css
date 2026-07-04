@@ -5,7 +5,17 @@
   --navy-3: #162645;
   --gold: #C9A84C;
   --gold-light: #E2C46E;
-  --gold-dim: rgba(201,168,;
+  --gold-dim: rgba(201,168,76,0.15);
+  --cream: #F5F0E8;
+  --cream-dim: rgba(245,240,232,0.7);
+  --white: #ffffff;
+  --text-main: var(--cream);
+  --text-sub: rgba(245,240,232,0.65);
+  --border: rgba(201,168,76,0.2);
+  --card-bg: rgba(15,31,61,0.7);
+  --header-bg: rgba(10,22,40,0.92);
+  --radius: 16px;
+  --radius-sm: 8px;
   --shadow: 0 8px 40px rgba(0,0,0,0.4);
   --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
 }
