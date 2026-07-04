@@ -30,16 +30,12 @@ function applyTheme(theme) {
   }
 }
 
-// اصلاح شده: اضافه کردن شرط برای دکمه تم
-const themeBtn = document.getElementById('themeBtn');
-if (themeBtn) {
-  themeBtn.addEventListener('click', () => {
-    const isLight = document.body.classList.contains('light-mode');
-    const next = isLight ? 'dark' : 'light';
-    localStorage.setItem('ng_theme', next);
-    applyTheme(next);
-  });
-}
+document.getElementById('themeBtn').addEventListener('click', () => {
+  const isLight = document.body.classList.contains('light-mode');
+  const next = isLight ? 'dark' : 'light';
+  localStorage.setItem('ng_theme', next);
+  applyTheme(next);
+});
 
 // ---- HAMBURGER MENU ----
 const hamburger = document.getElementById('hamburger');
@@ -48,25 +44,20 @@ const navOverlay = document.getElementById('navOverlay');
 const navClose = document.getElementById('navClose');
 
 function openNav() {
-  if (navDrawer && navOverlay) {
-    navDrawer.classList.add('open');
-    navOverlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
+  navDrawer.classList.add('open');
+  navOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
 function closeNav() {
-  if (navDrawer && navOverlay) {
-    navDrawer.classList.remove('open');
-    navOverlay.classList.remove('open');
-    document.body.style.overflow = '';
-  }
+  navDrawer.classList.remove('open');
+  navOverlay.classList.remove('open');
+  document.body.style.overflow = '';
 }
 
-// اصلاح شده: اضافه کردن شرط برای دکمه‌های منو
-if (hamburger) { hamburger.addEventListener('click', openNav); }
-if (navClose) { navClose.addEventListener('click', closeNav); }
-if (navOverlay) { navOverlay.addEventListener('click', closeNav); }
+hamburger.addEventListener('click', openNav);
+navClose.addEventListener('click', closeNav);
+navOverlay.addEventListener('click', closeNav);
 
 // Close on nav link click
 document.querySelectorAll('.nav-link').forEach(link => {
@@ -77,18 +68,13 @@ document.querySelectorAll('.nav-link').forEach(link => {
 const langBtn = document.getElementById('langBtn');
 const langDropdown = document.getElementById('langDropdown');
 
-// اصلاح شده: اضافه کردن شرط برای دکمه زبان
-if (langBtn && langDropdown) {
-  langBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    langDropdown.classList.toggle('open');
-  });
-}
+langBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  langDropdown.classList.toggle('open');
+});
 
 document.addEventListener('click', () => {
-  if (langDropdown) {
-    langDropdown.classList.remove('open');
-  }
+  langDropdown.classList.remove('open');
 });
 
 // ---- SCROLL REVEAL ----
@@ -131,27 +117,22 @@ function initVideo() {
   const soundBtn = document.getElementById('soundBtn');
   const soundIcon = document.getElementById('soundIcon');
 
-  // اصلاح شده: بررسی وجود المان ویدیو قبل از اجرا
-  if (!video) return;
-
+  // Check if video src is set (via admin panel)
   const savedVideo = localStorage.getItem('ng_video_url');
-  if (savedVideo && video.querySelector('source')) {
+  if (savedVideo) {
     video.querySelector('source').src = savedVideo;
     video.load();
-    if (placeholder) placeholder.style.display = 'none';
+    placeholder.style.display = 'none';
     video.style.display = 'block';
-    if (controls) controls.style.display = 'flex';
+    controls.style.display = 'flex';
     video.play().catch(() => {});
   }
 
-  if (soundBtn && soundIcon) {
+  if (soundBtn) {
     soundBtn.addEventListener('click', () => {
       video.muted = !video.muted;
       soundIcon.className = video.muted ? 'fa fa-volume-mute' : 'fa fa-volume-high';
-      const span = soundBtn.querySelector('span');
-      if (span) {
-        span.textContent = video.muted ? 'Tap to unmute' : 'Mute';
-      }
+      soundBtn.querySelector('span').textContent = video.muted ? 'Tap to unmute' : 'Mute';
     });
   }
 }
@@ -170,6 +151,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ---- DIRECT CHAT URL ----
+// If URL ends with #chat, scroll there automatically
 if (window.location.hash === '#chat') {
   setTimeout(() => {
     const chatSection = document.getElementById('chat');
