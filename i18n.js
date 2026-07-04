@@ -87,7 +87,7 @@ const translations = {
     desc_saffron: "مورد زعفران نخب أول يقدم أجود جودة مع قوة تلوين عالية جداً مصحوبة بشهادة مخبرية.",
     tag_dietai: "أداة ذكاء اصطناعي",
     desc_dietai: "مطور أداة ذكاء اصطناعي لتخطيط الحمية والتغذية. إرشاد غذائي ذكي ومخصص ومبني على العلم.",
-    try_tool: "جرب الأداة — قريباً",
+    try_tool: "جرب الأداة — قريبا",
     tag_market: "تداول",
     desc_market: "متداول محترف في الأسواق المالية بعين حادة للفرص وإدارة المخاطر.",
     tag_ai: "ذكاء اصطناعي",
@@ -111,15 +111,30 @@ function setLang(lang) {
   currentLang = lang;
   localStorage.setItem('ng_lang', lang);
   applyLang();
-  document.getElementById('langDropdown').classList.remove('open');
+  const dropdown = document.getElementById('langDropdown');
+  if (dropdown) dropdown.classList.remove('open');
 }
 
 function applyLang() {
   const t = translations[currentLang];
   const dir = currentLang === 'fa' || currentLang === 'ar' ? 'rtl' : 'ltr';
+  
   document.documentElement.lang = currentLang;
   document.body.dir = dir;
-  document.querySelector('html').dir = dir;
+  document.documentElement.dir = dir;
+
+  // اضافه شدن کدهای اصلاح کلاس چیدمان برای درست شدن CSS سایت
+  if (dir === 'rtl') {
+    document.documentElement.classList.add('rtl');
+    document.documentElement.classList.remove('ltr');
+    document.body.classList.add('rtl');
+    document.body.classList.remove('ltr');
+  } else {
+    document.documentElement.classList.add('ltr');
+    document.documentElement.classList.remove('rtl');
+    document.body.classList.add('ltr');
+    document.body.classList.remove('rtl');
+  }
 
   const labels = { en: 'EN', fa: 'FA', ar: 'AR' };
   const langLabelEl = document.querySelector('.lang-label');
@@ -140,4 +155,6 @@ function applyLang() {
   });
 }
 
+// لود سریع جهت قبل از باز شدن کامل بدنه برای جلوگیری از به هم ریختگی اولیه ظاهر سایت
+applyLang();
 document.addEventListener('DOMContentLoaded', () => { applyLang(); });
