@@ -3,13 +3,24 @@
 // ---- AUTO DARK MODE (System Preference) ----
 function initTheme() {
   const stored = localStorage.getItem('ng_theme');
-  if (stored)
+  if (stored) {
+    applyTheme(stored);
+  } else {
+    // Auto detect
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     applyTheme(prefersDark ? 'dark' : 'light');
   }
 
   // Listen for system changes
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('chanocument.getElementById('themeIcon');
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('ng_theme')) {
+      applyTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+}
+
+function applyTheme(theme) {
+  const icon = document.getElementById('themeIcon');
   if (theme === 'light') {
     document.body.classList.add('light-mode');
     if (icon) { icon.className = 'fa fa-sun'; }
