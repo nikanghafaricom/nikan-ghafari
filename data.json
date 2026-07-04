@@ -1,0 +1,39 @@
+{
+  "hero": {
+    "fa": {
+      "eyebrow": "متخصص هوش مصنوعی · توسعه‌دهنده سیستم‌های هوشمند مالی · فعال اقتصادی",
+      "tagline": "فناوری، بازارهای مالی و تجارت.",
+      "cta": "بیشتر بدانید"
+    },
+    "en": {
+      "eyebrow": "AI Specialist · Financial Systems Developer · Economic Activist",
+      "tagline": "Technology, financial markets & trade.",
+      "cta": "Discover More"
+    },
+    "ar": {
+      "eyebrow": "متخصص ذكاء اصطناعي · مطور أنظمة مالية ذكية · ناشط اقتصادي",
+      "tagline": "التكنولوجيا، الأسواق المالية والتجارة.",
+      "cta": "اكتشف المزيد"
+    }
+  },
+  "about": {
+    "fa": { "body": "من متخصص هوش مصنوعی، توسعه‌دهنده سیستم‌های هوشمند مالی و فعال اقتصادی در حوزه طلای سرخ ایران هستم..." },
+    "en": { "body": "I am Nikan Ghafari — an AI specialist, developer of intelligent financial systems, and economic activist..." },
+    "ar": { "body": "أنا نيكان غفاري — متخصص في الذكاء الاصطناعي، ومطور للأنظمة المالية الذكية، وناشط اقتصادی..." }
+  },
+  "contact": {
+    "phone": "+989378223550",
+    "personal_telegram": "@NikanGhafari",
+    "saffron_channel": "ghafari_saffron",
+    "dietai_support": "@RezhimPlusBot",
+    "bale_eitaa": "ghafari_saffron",
+    "gmail": "nikanghafaricom@gmail.com"
+  },
+  "visibility": {
+    "video": true,
+    "about": true,
+    "ventures": true,
+    "chat": true,
+    "contact": true
+  }
+}
