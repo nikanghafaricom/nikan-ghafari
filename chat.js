@@ -1,7 +1,9 @@
-// ===== CHAT WITH TELEGRAM BOT =====
-// Replace these with your actual values:
-const TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE';
-const TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID_HERE';
+// ===== SUPABASE & CHAT CONFIGURATION =====
+const SUPABASE_URL = 'https://pjomrxskxppgqtfjpwuhg.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_ui-UWIpxQ7Ssx8C6MBub2w_vlfDGLvs';
+
+// اتصال به دیتابیس Supabase
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let chatUserName = '';
 let pendingMedia = null;
@@ -18,23 +20,20 @@ function startChat() {
   }
   chatUserName = name;
 
-  // Hide name prompt, show input area
+  // مخفی کردن فرم نام و نمایش کادر چت
   document.getElementById('chatNamePrompt').style.display = 'none';
   document.getElementById('chatInputArea').style.display = 'block';
 
-  // Add welcome message in chat
-  const t = translations[currentLang] || translations['en'];
-  addSystemMsg(`✅ Hello ${name}! You can now send your message.`);
-
-  // Focus input
+  addSystemMsg(`✅ خوش آمدید ${name}! می‌توانید پیام خود را ارسال کنید.`);
   document.getElementById('chatInput').focus();
 
-  // Notify Telegram
-  sendToTelegram(`🔔 New visitor started chat\n👤 Name: ${name}\n🌐 Lang: ${currentLang.toUpperCase()}`);
+  // شروع دریافت پیام‌ها به صورت آنی
+  listenToMessages();
 }
 
 function addSystemMsg(text) {
   const msgs = document.getElementById('chatMessages');
+  if (!msgs) return;
   const div = document.createElement('div');
   div.className = 'chat-msg system';
   div.textContent = text;
@@ -42,130 +41,72 @@ function addSystemMsg(text) {
   msgs.scrollTop = msgs.scrollHeight;
 }
 
-function addUserMsg(text, mediaEl) {
+function addUserMsg(sender, text) {
   const msgs = document.getElementById('chatMessages');
+  if (!msgs) return;
   const div = document.createElement('div');
-  div.className = 'chat-msg user';
-  if (mediaEl) div.appendChild(mediaEl);
-  if (text) div.appendChild(document.createTextNode(text));
+  div.className = sender === 'مدیر' ? 'chat-msg admin' : 'chat-msg user';
+  div.textContent = `${sender}: ${text}`;
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
 
-function addSentConfirm() {
-  const msgs = document.getElementById('chatMessages');
-  const div = document.createElement('div');
-  div.className = 'chat-msg sent-confirm';
-  div.textContent = '✓ Message sent';
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
+// ارسال پیام به دیتابیس Supabase (تا هم شما و هم کاربر ببینید)
 async function sendMessage() {
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
 
-  if (!text && !pendingMedia) return;
+  if (!text) return;
 
-  // Show in chat
-  let mediaEl = null;
-  if (pendingMedia && pendingMediaType) {
-    if (pendingMediaType.startsWith('image')) {
-      mediaEl = document.createElement('img');
-      mediaEl.src = pendingMedia;
-      mediaEl.className = 'msg-media';
-    } else if (pendingMediaType.startsWith('video')) {
-      mediaEl = document.createElement('video');
-      mediaEl.src = pendingMedia;
-      mediaEl.className = 'msg-media';
-      mediaEl.controls = true;
-    }
-  }
-
-  addUserMsg(text, mediaEl);
-  input.value = '';
-
-  // Clear media preview
-  document.getElementById('mediaPreview').innerHTML = '';
-
-  // Send to Telegram
   try {
-    if (pendingMediaFile) {
-      await sendMediaToTelegram(pendingMediaFile, text);
-    } else if (text) {
-      await sendToTelegram(`💬 Message from ${chatUserName}:\n${text}`);
-    }
-    addSentConfirm();
+    const { error } = await supabaseClient
+      .from('messages')
+      .insert([{ sender: chatUserName, message: text }]);
+
+    if (error) throw error;
+
+    input.value = '';
   } catch (e) {
-    addSystemMsg('⚠ Could not deliver message. Please try again.');
+    console.error(e);
+    addSystemMsg('⚠ خطا در ارسال پیام. لطفاً دوباره تلاش کنید.');
   }
-
-  pendingMedia = null;
-  pendingMediaType = null;
-  pendingMediaFile = null;
 }
 
-function previewMedia(event) {
-  const file = event.target.files[0];
-  if (!file) return;
+// دریافت آنی پیام‌ها از دیتابیس (Real-time)
+function listenToMessages() {
+  const msgsBox = document.getElementById('chatMessages');
+  
+  // بارگذاری پیام‌های قبلی
+  supabaseClient
+    .from('messages')
+    .select('*')
+    .order('created_at', { ascending: true })
+    .then(({ data, error }) => {
+      if (error) return;
+      msgsBox.innerHTML = '';
+      data.forEach(msg => {
+        addUserMsg(msg.sender, msg.message);
+      });
+    });
 
-  pendingMediaFile = file;
-  pendingMediaType = file.type;
-
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    pendingMedia = e.target.result;
-    const preview = document.getElementById('mediaPreview');
-    preview.innerHTML = '';
-    if (file.type.startsWith('image')) {
-      const img = document.createElement('img');
-      img.src = pendingMedia;
-      preview.appendChild(img);
-    } else if (file.type.startsWith('video')) {
-      const vid = document.createElement('video');
-      vid.src = pendingMedia;
-      vid.controls = true;
-      preview.appendChild(vid);
-    }
-  };
-  reader.readAsDataURL(file);
-  event.target.value = '';
+    // گوش دادن به پیام‌های جدید به صورت لحظه‌ای
+    supabaseClient
+      .channel('public:messages')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+        const newMsg = payload.new;
+        addUserMsg(newMsg.sender, newMsg.message);
+      })
+      .subscribe();
 }
 
-async function sendToTelegram(message) {
-  if (TELEGRAM_BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') return; // Not configured yet
-  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-  await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: TELEGRAM_CHAT_ID,
-      text: message,
-      parse_mode: 'HTML'
-    })
-  });
-}
-
-async function sendMediaToTelegram(file, caption) {
-  if (TELEGRAM_BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') return;
-  const formData = new FormData();
-  formData.append('chat_id', TELEGRAM_CHAT_ID);
-  if (caption) formData.append('caption', `📎 From ${chatUserName}:\n${caption}`);
-
-  let endpoint;
-  if (file.type.startsWith('image')) {
-    formData.append('photo', file);
-    endpoint = 'sendPhoto';
-  } else if (file.type.startsWith('video')) {
-    formData.append('video', file);
-    endpoint = 'sendVideo';
-  } else {
-    formData.append('document', file);
-    endpoint = 'sendDocument';
+// دکمه اینتر برای ارسال
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('chatInput');
+  if (input) {
+    input.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
   }
-
-  await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${endpoint}`, {
-    method: 'POST',
-    body: formData
-  });
-}
+});
