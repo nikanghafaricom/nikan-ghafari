@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Nikan Ghafari</title>
+  
+  <!-- اتصال فایل‌های PWA -->
+  <link rel="manifest" href="./manifest.json"/>
+  <meta name="theme-color" content="#bfa15f"/>
+
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
@@ -50,7 +55,6 @@
       font-size: 24px;
       margin-bottom: 8px;
     }
-    /* استایل اختصاصی برای آیکون‌های متنی SVG پلتفرم‌های ایرانی جهت هماهنگی با فونت‌أوسام */
     .svg-icon-gold {
       width: 24px;
       height: 24px;
@@ -195,7 +199,6 @@
     <h2 class="section-title" data-i18n="ventures_title">فعالیت‌های من</h2>
     <div class="ventures-grid" id="venturesGrid">
 
-      <!-- کارت زعفران بخش فعالیت‌ها با لوگوی واقعی روبیکا -->
       <div class="venture-card" data-venture="saffron">
         <div class="venture-image-wrap">
           <div class="venture-img-placeholder saffron-bg">
@@ -296,27 +299,23 @@
   </div>
 </section>
 
-<!-- بخش ۶ کارتی نهایی ارتباط با ما همراه با آیکون‌های واقعی بله، ایتا و روبیکا -->
 <section id="contact">
   <div class="container">
     <h2 class="section-title" data-i18n="nav_contact">ارتباط با ما</h2>
     <div class="contact-grid-6">
       
-      <!-- ۱. کارت تماس و واتساپ (با آیکون هماهنگ تلفن) -->
       <a href="tel:+989378223550" class="c-card-fixed">
         <i class="fa fa-phone c-icon-gold"></i>
         <span class="c-label-gold" data-i18n="c_call_wh">تماس و واتساپ</span>
         <span class="c-val-text ltr-fix">+98 937 822 3550</span>
       </a>
       
-      <!-- ۲. کارت مدیریت تلگرام -->
       <a href="https://t.me/NikanGhafari" target="_blank" class="c-card-fixed">
         <i class="fab fa-telegram c-icon-gold"></i>
         <span class="c-label-gold" data-i18n="c_mgmt">مدیریت</span>
         <span class="c-val-text ltr-fix">@NikanGhafari</span>
       </a>
 
-      <!-- ۳. کارت زعفران (شامل آیکون واقعی رسمی روبیکا) -->
       <div class="c-card-fixed">
         <i class="fa fa-seedling c-icon-gold"></i>
         <span class="c-label-gold" data-i18n="c_saffron">زعفران</span>
@@ -330,30 +329,25 @@
         </div>
       </div>
       
-      <!-- ۴. کارت پشتیبانی ابزار رژیم غذایی -->
       <a href="https://t.me/mrgh_link" target="_blank" class="c-card-fixed">
         <i class="fa fa-brain c-icon-gold"></i>
         <span class="c-label-gold" data-i18n="c_diet_support">پشتیبانی ابزار رژیم غذایی</span>
         <span class="c-val-text ltr-fix">@mrgh_link</span>
       </a>
 
-      <!-- ۵. کارت پشتیبان بله و ایتا (شامل لوگوهای SVG رسمی و واقعی بله و ایتا) -->
       <div class="c-card-fixed">
         <i class="fa fa-comments c-icon-gold"></i>
         <span class="c-label-gold" data-i18n="c_bale_eitaa">پشتیبان بله و ایتا</span>
         <div class="c-multi-row">
           <a href="https://ble.ir/ghafari_saffron" target="_blank" class="c-sub-link">
-            <!-- لوگوی واقعی بله -->
             <svg class="svg-icon-inline" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.434 5.176L2.05 21.415a.5.5 0 0 0 .614.613l4.238-1.385A9.954 9.954 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm3.62 13.142c-.51.782-1.285 1.344-2.182 1.583a4.276 4.276 0 0 1-2.185-.015c-.89-.25-1.656-.82-2.155-1.61a4.84 4.84 0 0 1-.643-2.392c.01-.87.27-1.684.736-2.373.476-.704 1.173-1.22 1.977-1.46a3.951 3.951 0 0 1 2.214.022c.792.25 1.478.78 1.938 1.492.454.7.7 1.523.7 2.383a4.93 4.93 0 0 1-.62 2.37z"/></svg> <span data-i18n="bale_label">بله</span>
           </a>
           <a href="https://eitaa.com/ghafari_saffron" target="_blank" class="c-sub-link">
-            <!-- لوگوی واقعی ایتا -->
             <svg class="svg-icon-inline" viewBox="0 0 30 30"><path d="M15 0C6.716 0 0 6.716 0 15s6.716 15 15 15 15-6.716 15-15S23.284 0 15 0zm6.98 19.31c-.34 1.91-2.26 3.42-4.52 3.51-2.54.1-5.18-.94-6.44-2.91-.71-1.11-.93-2.56-.93-3.86 0-1.78.47-3.41 1.6-4.68 1.44-1.62 3.86-2.18 5.92-1.74 2.12.45 3.73 2.16 4.14 4.29.23 1.21.1 2.49-.57 3.53-.45.7-1.19 1.17-2.02 1.25-.92.09-1.84-.33-2.15-1.18-.08-.22-.12-.46-.11-.69.04-.95.73-1.75 1.63-1.99.37-.1.77-.09 1.14.02.16.05.3.16.33.33.04.22-.11.42-.32.46-.26.05-.53.04-.79-.02-.5-.12-.96.22-1.04.73-.09.6-.01 1.22.25 1.76.32.66 1.12.92 1.77.58.54-.28.84-.87.94-1.46.22-1.35-.18-2.77-1.09-3.76-1.13-1.23-3.03-1.52-4.48-.75-1.38.73-2.19 2.25-2.22 3.81-.03 1.54.73 3.06 2.05 3.83 1.24.72 2.87.67 4.05-.12.16-.11.38-.07.49.09.11.16.07.38-.09.49z"/></svg> <span data-i18n="eitaa_label">ایتا</span>
           </a>
         </div>
       </div>
 
-      <!-- ۶. کارت جیمیل -->
       <a href="mailto:nikanghafaricom@gmail.com" class="c-card-fixed">
         <i class="far fa-envelope c-icon-gold"></i>
         <span class="c-label-gold" data-i18n="c_gmail">جیمیل</span>
