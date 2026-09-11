@@ -271,30 +271,12 @@
   </div>
 </section>
 
+<!-- بخش چت که با Tawk.to یکپارچه شده است -->
 <section id="chat">
-  <div class="container">
+  <div class="container" style="height: 100%; display: flex; flex-direction: column;">
     <h2 class="section-title" data-i18n="chat_title">چت آنلاین</h2>
-    <div class="chat-box">
-      <div class="chat-messages" id="chatMessages">
-        <div class="chat-msg system">
-          <span data-i18n="chat_welcome">👋 خوش آمدید! لطفاً نام خود را وارد کنید.</span>
-        </div>
-      </div>
-      <div class="chat-name-prompt" id="chatNamePrompt">
-        <input type="text" id="chatNameInput" placeholder="نام شما..." data-i18n-placeholder="name_placeholder" maxlength="30"/>
-        <button onclick="startChat()" data-i18n="start_chat">شروع چت</button>
-      </div>
-      <div class="chat-input-area" id="chatInputArea" style="display:none;">
-        <div class="chat-media-preview" id="mediaPreview"></div>
-        <div class="chat-toolbar">
-          <label class="media-btn" title="Attach file">
-            <i class="fa fa-paperclip"></i>
-            <input type="file" id="mediaInput" accept="image/*,video/*" style="display:none;" onchange="previewMedia(event)"/>
-          </label>
-          <input type="text" id="chatInput" placeholder="پیام خود را بنویسید..." data-i18n-placeholder="msg_placeholder" onkeydown="if(event.key==='Enter')sendMessage()"/>
-          <button class="send-btn" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
-        </div>
-      </div>
+    <div class="chat-box" id="tawkContainer" style="flex: 1; min-height: 500px; width: 100%;">
+      <!-- ویجت Tawk.to به صورت خودکار اینجا لود می‌شود -->
     </div>
   </div>
 </section>
@@ -366,7 +348,21 @@
 <script src="chat.js"></script>
 <script src="main.js"></script>
 
-<!-- اسکریپت مخصوص اپلیکیشن برای نمایش اختصاصی بخش چت -->
+<!-- Start of Tawk.to Script -->
+<script type="text/javascript">
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6aa34d07a9c29834424217d4/1k26u9pd4';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+  })();
+</script>
+<!-- End of Tawk.to Script -->
+
+<!-- اسکریپت مخصوص اپلیکیشن برای نمایش اختصاصی بخش چت با تاوک‌تو -->
 <script>
   window.addEventListener('DOMContentLoaded', () => {
     if (window.location.hash === '#chat') {
