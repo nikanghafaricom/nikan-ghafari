@@ -365,5 +365,23 @@
 <script src="i18n.js"></script>
 <script src="chat.js"></script>
 <script src="main.js"></script>
+
+<!-- اسکریپت مخصوص اپلیکیشن برای نمایش اختصاصی بخش چت -->
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash === '#chat') {
+      // مخفی کردن تمام بخش‌های صفحه به جز بخش چت و اسکریپت‌ها
+      document.querySelectorAll('body > *:not(#chat):not(script)').forEach(el => {
+        el.style.display = 'none';
+      });
+      const chatSec = document.getElementById('chat');
+      if (chatSec) {
+        chatSec.style.display = 'block';
+        chatSec.style.minHeight = '100vh';
+        chatSec.style.padding = '10px 0';
+      }
+    }
+  });
+</script>
 </body>
 </html>
